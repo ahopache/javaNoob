@@ -6,6 +6,11 @@
  * Fonte: https://commons.apache.org/proper/commons-text/
  *
  * @autor Assis Henrique Oliveira Pacheco
+ * 
+ * TODO:
+ * - Pattern all methods in english version
+ * - Translate all docs to english
+ * 
  * @version 1.2
  * Incluido construtor recebendo String
  *
