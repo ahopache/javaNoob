@@ -11,26 +11,25 @@ import org.apache.commons.net.ftp.FTPClient;
 
 import javax.swing.*;
 import java.io.*;
-import java.util.Arrays;
 
-public class UtilFTP {
-	private long keepAliveTimeout = -1;
-	private String protocol = null;
-
+public class UtilFTPClient {
 	protected FTPClient client;
-	protected String pastaAtualFTP;
 	
 	protected String host;
 	protected String user;
 	protected String pass;
 	protected Integer port;
+	private String protocol = null;
+	
+	@Deprecated
+	protected String pastaAtualFTP;
 	
 	protected static String pastaLocal = System.getProperty("user.home") + File.separatorChar + "Documents\\Repositorio\\";
 	
 	/**
 	 * Construtor vazio
 	 */
-	public UtilFTP(){	}
+	public UtilFTPClient(){	}
 	
 	/**
 	 * Construtor já conectando ao FTP
@@ -39,7 +38,7 @@ public class UtilFTP {
 	 * @param user -> usuario
 	 * @param pass -> senha
 	 */
-	public UtilFTP(String host, String user, String pass){
+	public UtilFTPClient(String host, String user, String pass){
 		this.connect(host, user, pass);
 	}
 	
