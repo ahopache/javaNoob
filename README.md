@@ -1,9 +1,9 @@
 # javaNoob
 
-## Descri��o / Description
+## Descrição / Description
 
 **Portugues BR**
-- Algumas classes para ajudar quem est� come�ando com o desenvolvimento Java
+- Algumas classes para ajudar quem está começando com o desenvolvimento Java
 
 **English**
 - Some classes to help those who are starting with Java development
