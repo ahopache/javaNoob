@@ -2,6 +2,7 @@
  * encode: utf-8
  * 
  * @author Assis Henrique Oliveira Pacheco
+ * @version 1.0
  */
 package util;
 
@@ -25,14 +26,14 @@ public class UtilWeb {
 
     /**
      * Construtor definindo o local do driver para pasta default
-     * Se necessario, utilize o método setDriverFireforDirectory() para definir outro local 
+     * Se necessario, utilize o mï¿½todo setDriverFireforDirectory() para definir outro local 
      */
     public UtilWeb(){
     	this.setDriverFireforDirectory("D:\\programas\\selennium_driver\\geckodriver.exe");
     }
     
     /**
-     * Definir local do drive para conexão com Firefox
+     * Definir local do drive para conexï¿½o com Firefox
      * 
      * @param driverLocation
      */
