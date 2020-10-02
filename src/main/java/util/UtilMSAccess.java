@@ -21,7 +21,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class UtilAccess {
+public class UtilMSAccess {
 	private Connection con;
 	private Statement stm;
 	private String nomeBanco;
