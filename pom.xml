@@ -83,18 +83,18 @@
         </dependency>
 		
 		<!-- https://mvnrepository.com/artifact/org.apache.hadoop/hadoop-common -->
-<dependency>
-    <groupId>org.apache.hadoop</groupId>
-    <artifactId>hadoop-common</artifactId>
-    <version>3.3.0</version>
-</dependency>
+		<dependency>
+		    <groupId>org.apache.hadoop</groupId>
+		    <artifactId>hadoop-common</artifactId>
+		    <version>3.3.0</version>
+		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.apache.ftpserver/ftpserver-core -->
-<dependency>
-    <groupId>org.apache.ftpserver</groupId>
-    <artifactId>ftpserver-core</artifactId>
-    <version>1.1.1</version>
-    <scope>test</scope>
-</dependency>
+		<dependency>
+		    <groupId>org.apache.ftpserver</groupId>
+		    <artifactId>ftpserver-core</artifactId>
+		    <version>1.1.1</version>
+		    <scope>test</scope>
+		</dependency>
 		
     </dependencies>
 </project>
