@@ -1,3 +1,8 @@
+/**
+ * encode: utf-8
+ * 
+ * @author Assis Henrique Oliveira Pacheco
+ */
 package webAPI;
 
 public class APIHeader {
