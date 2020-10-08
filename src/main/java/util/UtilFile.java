@@ -73,8 +73,12 @@ public class UtilFile {
 	 *
 	 * @param arquivo -> com o nome e endereço do arquivo
 	 */
-	public void setArquivo(String file) {
+	public void setFile(String file) {
 		this.file = new LocalFile(file);
+	}
+	
+	public LocalFile getLocalFile() {
+		return this.file;
 	}
 	
 	/**
@@ -89,42 +93,39 @@ public class UtilFile {
 	 * Método para criar um arquivo texto, considerando a codificação padrão (UTF-8 ou outra definida em setEncode())
 	 * @param nomeArquivo
 	 */
-	public void createFile(String nomeArquivo){
+	public boolean createFile(String nomeArquivo){
 		this.file.setFileName(nomeArquivo);
-		this.createFile();
+		return this.createFile();
 	}
 
 	/**
 	 * Método para criar um arquivo texto, considerando a codificação padrão (UTF-8 ou outra definida em setEncode())
 	 */
-	public void createFile(){
+	public boolean createFile(){
 		try {
-			bufferOut = new OutputStreamWriter( new FileOutputStream(this.file.getFileFullName()),encode);
+			bufferOut = new OutputStreamWriter( new FileOutputStream(this.file.getFileFullName()), encode);
+			return true;
 		} catch (IOException ex) {
-			Logger.getLogger(UtilFile.class.getName()).log(Level.SEVERE, null, ex);
+			return false;
 		}
 	}
 
     /**
 	 * Método que exclui um arquivo
-	 * @param arquivo Nome do arquivo a ser excluindo, incluindo o diretorio dele
+	 * 
 	 * @return boolean informando se foi ou não excluido
 	 */
-    public boolean excludeFile(String file){
-    	return new File(file).delete();
-    }
-
-	public boolean delFile(String file){
-		return this.excludeFile(file);
+	public boolean deleteFile(){
+		return this.excludeFile();
 	}
     
 	/**
 	 * Método que exclui um arquivo
-	 * @param arquivo Nome do arquivo a ser excluindo, incluindo o diretorio dele
+	 * 
 	 * @return boolean informando se foi ou não excluido
 	 */
-	public boolean excludeFile(File arquivo){
-		return arquivo.delete();
+	public boolean excludeFile(){
+		return (new File(this.file.getFileFullName())).delete();
 	}
 
     /**
@@ -134,7 +135,7 @@ public class UtilFile {
         try {
         	bufferOut.close();
         } catch (IOException ex) {
-            Logger.getLogger(UtilFile.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
         }
     }
 
@@ -142,12 +143,16 @@ public class UtilFile {
      * Método para incluir uma linha no arquivo texto
      * @param linha
      */
-    public void newLine(String linha){
+    public boolean newLine(String linha){
         try {
+        	if(bufferOut == null)
+        		bufferOut = new OutputStreamWriter( new FileOutputStream(this.file.getFileFullName()),encode);
         	bufferOut.write( linha );
+        	return true;
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return false;
     }
 
 	/**
@@ -158,17 +163,17 @@ public class UtilFile {
 	 * @return
 	 */
 	public boolean renameFile(String newName){
-		//	 Arquivo ou diretório com nome antigo
 		File file = new File( this.file.getFileFullName() );
-		// Arquivo ou diretório com novo nome
 		File file2 = new File( this.file.getDirectory() + newName );
-		// Renomeando arquivo ou diretório
+
 		boolean success = file.renameTo( file2 );
 		if (!success) {
-			if( file.exists() )
+			if( file.exists() && file2.exists() )
 				file2.delete();
 			success = file.renameTo(file2);
 		}
+		if(success)
+			this.file.setFileName(newName);
 
 		file = null;
 		file2 = null;
@@ -187,7 +192,7 @@ public class UtilFile {
 	 * Verifica se um arquivo ou pasta existe
 	 * @return True/False se o arquivo ou pasta existe
 	 */
-	public boolean isExiste(){
+	public boolean isExists(){
 		return new File( this.file.getFileFullName() ).exists();
 	}
 	
@@ -204,24 +209,17 @@ public class UtilFile {
 	 * Método para criar um diretorio, caso ele não exista
 	 * @param directory
 	 */
-	public void createDirectoryIfDoesntExists(String directory) {
+	public boolean createDirectoryIfDoesntExists(String directory) {
 		File path = new File( directory ); //( nmPath ).exists();
 		if ( !path.exists() ) {
 			path.mkdir();
-			//System.out.println("(foi criado uma pasta '" + directory + "')");
 		}
+		if ( path.exists() )
+			return true;
+		else
+			return false;
 	}
 
-	/**
-	 * Método para retornar a data de modificação do arquivo no formato long
-	 * 
-	 * @return long com o tamanho do arquivo
-	 */
-	public long getDataModificacaoArquivoLong(){
-		File file = new File( this.file.getFileFullName() );
-		
-		return file.lastModified();
-	}
 	
 	/**
 	 * Método para retornar data de modificação do arquivo
@@ -241,7 +239,7 @@ public class UtilFile {
      * Lista arquivos existentes no diretorio setado
      * Armazena na memoria essa lista para posterior consulta
      */
-	public void listFilesInDirectory(){
+	public File[] listFilesInDirectory(){
 		File diretorio = new File(this.file.getDirectory());
 		File fList[] = diretorio.listFiles();
 
@@ -250,6 +248,8 @@ public class UtilFile {
 		for ( int i = 0; i < fList.length ; i++ ){ 
 			System.out.println( fList[i] );
 		}
+		
+		return fList;
 	}
 		
 	/**
@@ -257,7 +257,7 @@ public class UtilFile {
 	 * 
 	 * @return
 	 */
-	private boolean isFilestartsWithBOM() {
+	public boolean isFileStartsWithBOM() {
 		File textFile = new File(this.file.getFileFullName());
 		boolean result = false;
 		int[] BYTE_ORDER_MARK = {239, 187, 191};
@@ -292,25 +292,26 @@ public class UtilFile {
 	 * 
 	 * @param encode
 	 */
-	public void openTextFile(String encode){
+	public boolean openTextFile(String encode){
 		try {
 			arquivoLido = new FileInputStream( this.file.getFileFullName() );
 			InputStreamReader streamReader = new InputStreamReader(arquivoLido, encode);
 			reader = new BufferedReader(streamReader);
+			return true;
 		} catch (FileNotFoundException e) {
-			System.out.println("Deu erro para abrir o arquivo....");
 			e.printStackTrace();
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
+		return false;
 	}
 
 	/**
 	 * Método para abrir um arquivo em formato texto
 	 * @param arquivo File
 	 */
-	public void openTextFile(){
-		this.openTextFile(encode);
+	public boolean openTextFile(){
+		return this.openTextFile(encode);
 	}
 	
 	
@@ -349,14 +350,13 @@ public class UtilFile {
 	 * Método para copiar arquivo de um local para outro
 	 * TODO: igualar lógica ao método copiarArquivo(ArquivoLocal,ArquivoLocal)
 	 *
-	 * @param arquivoDe
 	 * @param arquivoPara
 	 */
-	public void copyFile( String arquivoDe, String arquivoPara ){
+	public boolean copyFile( String arquivoPara ){
 		FileChannel fileDe;
 		FileChannel filePara;
 		try {
-			fileDe = new FileInputStream( arquivoDe ).getChannel();
+			fileDe = new FileInputStream( this.file.getFileFullName() ).getChannel();
 			filePara = new FileOutputStream( arquivoPara ).getChannel();
 
 			ByteBuffer bb = ByteBuffer.allocateDirect(2048);
@@ -370,25 +370,26 @@ public class UtilFile {
 			fileDe.close();
 			filePara.close();
 
-			File arquivoOrigem = new File ( arquivoDe );
+			File arquivoOrigem = new File ( this.file.getFileFullName() );
 			File arquivoCopiado = new File( arquivoPara );
 			GregorianCalendar dataArquivo = new GregorianCalendar();
 			dataArquivo.setTimeInMillis(  arquivoOrigem.lastModified() );
 
 			arquivoCopiado.setLastModified( dataArquivo.getTimeInMillis() );
-
+			return true;
 		} catch (FileNotFoundException e) {
-			System.out.println("Arquivo não localizado: " + arquivoDe);
+			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		return false;
 	}
 
 	/**
 	 * @return the encode
 	 */
 	public String getEncode() {
-		return encode;
+		return this.encode;
 	}
 
 	/**

@@ -1,10 +1,12 @@
 package util;
 
 public class LocalFile {
-	private String fileName;
-	private String directory;
+	private String fileName = null;
+	private String directory = null;
 
 	public String getDirectory() {
+		if (directory == null)
+			return "";
 		return directory;
 	}
 
@@ -29,6 +31,9 @@ public class LocalFile {
 	}
 	
 	public String getFileFullName() {
-		return this.directory + this.fileName;
+		if (this.directory == null)
+			return this.fileName;
+		else
+			return this.directory + this.fileName;
 	}
 }
