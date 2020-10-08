@@ -28,7 +28,7 @@ public class UtilLog {
 		SimpleDateFormat hrFormat = new SimpleDateFormat("HH:mm:ss") ;
 		Date date = new Date() ;
 
-		file.setArquivo(project + "_LOG_" + dtFormat.format(date) + ".CSV");
+		file.setFile(project + "_LOG_" + dtFormat.format(date) + ".CSV");
 		file.newLine(hrFormat.format(date) + ";" + message);
 		file.saveFile();
 		file.closeTextFile();
