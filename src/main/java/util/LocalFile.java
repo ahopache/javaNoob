@@ -1,5 +1,7 @@
 package util;
 
+import java.io.IOException;
+
 public class LocalFile {
 	private String fileName = null;
 	private String directory = null;
@@ -31,9 +33,14 @@ public class LocalFile {
 	}
 	
 	public String getFileFullName() {
-		if (this.directory == null)
-			return this.fileName;
-		else
-			return this.directory + this.fileName;
+		if(this.directory == null) {
+			try {
+				this.directory = new java.io.File( "." ).getCanonicalPath() + "\\";
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+			
+		return this.directory + this.fileName;
 	}
 }

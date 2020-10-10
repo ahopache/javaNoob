@@ -30,12 +30,13 @@ class UtilFileTest {
 	 */
 	@Before
 	void testUtilFileConstructor() {
+		System.out.println("Teste construtores - Inicio");
 		file = new UtilFile(new LocalFile(fileName));
 		assertEquals(file.getLocalFile().getFileName(), fileName);
 		file = new UtilFile(fileName);
 		assertEquals(file.getLocalFile().getFileName(), fileName);
 		assertNull(file.getLocalFile().getFileName());
-		
+		System.out.println("Teste construtores - Fim");
 	}
 
 	/**
@@ -43,10 +44,12 @@ class UtilFileTest {
 	 */
 	@Test
 	void testSetFile() {
+		System.out.println("Teste setFile - Inicio");
 		file = new UtilFile();
 		file.setFile(fileName);
 		
 		assertEquals(fileName, file.getLocalFile().getFileName());
+		System.out.println("Teste setFile - Fim");
 	}
 
 	/**
@@ -54,10 +57,12 @@ class UtilFileTest {
 	 */
 	@Test
 	void testSetDirectory() {
+		System.out.println("Teste setDirectory - Inicio");
 		file = new UtilFile();
 		file.setDirectory(directory);
 		
 		assertEquals(directory, file.getLocalFile().getDirectory());
+		System.out.println("Teste setDirectory - Fim");
 	}
 
 	/**
@@ -66,34 +71,38 @@ class UtilFileTest {
 	 */
 	@Test
 	void testCreateFileString() throws IOException {
-		file = new UtilFile(fileName);
+		System.out.println("Teste createFile - Inicio");
+		System.out.println("- Teste1: criando por string");
+		file = new UtilFile(fileName);		
+		assertTrue( file.createFile());
+		assertTrue( file.newLine("teste criar arquivo"));
+		assertTrue( file.saveFile());
+		assertTrue( file.deleteFile());
 		
-		assertTrue(file.createFile());
-	}
-
-	/**
-	 * Test method for {@link util.UtilFile#createFile()}.
-	 */
-	@Test
-	void testCreateFile() {
+		System.out.println("- Teste1: criando pelo objeto LocalFile");
 		LocalFile localFile = new LocalFile();
 		localFile.setDirectory(directory);
 		localFile.setFileName(fileName);
 		file = new UtilFile(localFile);
-		
-		assertTrue(file.createFile(fileName));
+		assertTrue( file.createFile());
+		assertTrue( file.newLine("teste criar arquivo"));
+		assertTrue( file.saveFile());
+		assertTrue( file.deleteFile());
+		System.out.println("Teste createFile - Fim");
 	}
-	
+
 	/**
 	 * Test method for {@link util.UtilFile#saveFile()}.
 	 */
 	@Test
 	void testSaveFile() {
+		System.out.println("Teste saveFile - Inicio");
 		file = new UtilFile(fileName);
-		file.openTextFile();
-		assertTrue(file.newLine("teste save"));
-		file.saveFile();
-		file.closeTextFile();
+		assertTrue( file.createFile());
+		assertTrue( file.newLine("teste salvar arquivo"));
+		assertTrue( file.saveFile());
+		assertTrue( file.deleteFile());
+		System.out.println("Teste saveFile - Fim");
 	}
 
 	/**
@@ -101,11 +110,12 @@ class UtilFileTest {
 	 */
 	@Test
 	void testNewLine() {
+		System.out.println("Teste newLine - Inicio");
 		file = new UtilFile(fileName);
-		file.openTextFile();
-		assertTrue(file.newLine("teste linha 1"));
-		file.saveFile();
-		file.closeTextFile();
+		assertTrue( file.newLine("teste salvar arquivo"));
+		assertTrue( file.saveFile());
+		assertTrue( file.deleteFile());
+		System.out.println("Teste newLine - Fim");
 	}
 
 	/**
@@ -113,9 +123,17 @@ class UtilFileTest {
 	 */
 	@Test
 	void testRenameFile() {
+		System.out.println("Teste renomear arquivo - Inicio");
 		file = new UtilFile(fileName);
+		assertTrue( file.createFile());
+		assertTrue( file.newLine("teste renomear arquivo"));
+		assertTrue( file.saveFile());
+		System.out.println("Renomear de: " + file.getLocalFile().getFileFullName());
+		System.out.println("Para: " + file.getLocalFile().getDirectory() + "_" + fileName);
 		assertTrue( file.renameFile("_" + fileName) );
 		assertTrue( file.renameFile(fileName) );
+		assertTrue( file.deleteFile());
+		System.out.println("Teste renomear arquivo - Fim");
 	}
 
 	/**
@@ -123,9 +141,15 @@ class UtilFileTest {
 	 */
 	@Test
 	void testIsFile() {
+		System.out.println("Teste isFile - Inicio");
 		file = new UtilFile(fileName);
-		assertTrue(file.isFile());
-		assertTrue(file.isExists());
+		assertTrue( file.createFile());
+		assertTrue( file.newLine("teste isFile?"));
+		assertTrue( file.saveFile());
+		assertTrue( file.isFile());
+		assertTrue( file.isExists());
+		assertTrue( file.deleteFile());
+		System.out.println("Teste isFile - Fim");
 	}
 
 	/**
@@ -133,9 +157,10 @@ class UtilFileTest {
 	 */
 	@Test
 	void testCreateDirectoryIfDoesntExists() {
+		System.out.println("Teste createDirectory - Inicio");
 		file = new UtilFile(fileName);
 		assertTrue(file.createDirectoryIfDoesntExists(directory));
-		
+		System.out.println("Teste createDirectory - Fim");
 	}
 
 	/**
@@ -143,8 +168,14 @@ class UtilFileTest {
 	 */
 	@Test
 	void testGetFileLastModified() {
+		System.out.println("Teste getLastModified - Inicio");
 		file = new UtilFile(fileName);
-		assertTrue(file.getFileLastModified().before(new GregorianCalendar()));
+		assertTrue( file.createFile());
+		assertTrue( file.newLine("teste criar arquivo"));
+		assertTrue( file.saveFile());
+		assertTrue( file.getFileLastModified().before(new GregorianCalendar()));
+		assertTrue( file.deleteFile());
+		System.out.println("Teste getLastModified - Fim");
 	}
 
 	/**
@@ -152,9 +183,11 @@ class UtilFileTest {
 	 */
 	@Test
 	void testListFilesInDirectory() {
+		System.out.println("Teste listFiles - Inicio");
 		file = new UtilFile(fileName);
 		file.setDirectory(directory);
 		assertTrue(file.listFilesInDirectory().length >= 0);
+		System.out.println("Teste listFiles - Fim");
 	}
 
 	/**
@@ -162,8 +195,15 @@ class UtilFileTest {
 	 */
 	@Test
 	void testOpenTextFile() {
+		System.out.println("Teste openTextFile - Inicio");
 		file = new UtilFile(fileName);
+		assertTrue( file.createFile());
+		assertTrue( file.newLine("teste abrir arquivo"));
+		assertTrue( file.saveFile());
 		assertTrue( file.openTextFile() );
+		assertTrue( file.closeTextFile() );
+		assertTrue( file.deleteFile());
+		System.out.println("Teste openTextFile - Fim");
 	}
 
 	/**
@@ -171,9 +211,16 @@ class UtilFileTest {
 	 */
 	@Test
 	void testGetNextLineFromFile() {
+		System.out.println("Teste getNextLine - Inicio");
 		file = new UtilFile(fileName);
-		file.openTextFile();
-		assertTrue(file.getNextLineFromFile().length() >= 0);
+		assertTrue( file.createFile());
+		assertTrue( file.newLine("teste ler linha arquivo"));
+		assertTrue( file.saveFile());
+		assertTrue( file.openTextFile());
+		assertTrue( file.getNextLineFromFile().length() > 10);
+		assertTrue( file.closeTextFile());
+		assertTrue( file.deleteFile());
+		System.out.println("Teste getNextLine - Fim");
 	}
 
 	/**
@@ -181,10 +228,16 @@ class UtilFileTest {
 	 */
 	@Test
 	void testCopyFile() {
+		System.out.println("Teste copyFile - Inicio");
 		file = new UtilFile(fileName);
+		assertTrue( file.createFile());
+		assertTrue( file.newLine("teste copiar arquivo"));
+		assertTrue( file.saveFile());
 		assertTrue( file.copyFile("copy_" + fileName) );
+		assertTrue( file.deleteFile());
 		file = new UtilFile("copy_" + fileName);
 		assertTrue( file.deleteFile());
+		System.out.println("Teste copyFile - Fim");
 	}
 
 	/**
@@ -192,8 +245,10 @@ class UtilFileTest {
 	 */
 	@Test
 	void testGetEncode() {
+		System.out.println("Teste getEncode - Inicio");
 		file = new UtilFile(fileName);
 		assertEquals("UTF-8",this.file.getEncode());
+		System.out.println("Teste getEncode - Fim");
 	}
 
 	/**
@@ -201,12 +256,14 @@ class UtilFileTest {
 	 */
 	@Test
 	void testSetEncode() {
+		System.out.println("Teste setEncode - Inicio");
 		file = new UtilFile(fileName);
 		assertEquals("UTF-8", this.file.getEncode());
 		this.file.setEncode("teste");
 		assertEquals("teste", this.file.getEncode());
 		this.file.setEncode("UTF-8");
 		assertEquals("UTF-8", this.file.getEncode());
+		System.out.println("Teste setEncode - Fim");
 	}
 	
 	/**
@@ -214,8 +271,13 @@ class UtilFileTest {
 	 */
 	@Test
 	void testIsFileStartsWithBOM() {
+		System.out.println("Teste isFileStartsWithBOM - Inicio");
 		file = new UtilFile(fileName);
+		assertTrue(file.createFile());
+		assertTrue( file.newLine("teste is file start with UTF8 BOM ?"));
+		assertTrue( file.saveFile());
 		assertTrue(!this.file.isFileStartsWithBOM());
+		assertTrue(file.deleteFile());
+		System.out.println("Teste isFileStartsWithBOM - Fim");
 	}
-
 }

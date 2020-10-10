@@ -66,6 +66,12 @@ public class UtilFile {
 	 */
 	public UtilFile(){
 		this.file = new LocalFile();
+		try {
+			this.file.setDirectory(new java.io.File( "." ).getCanonicalPath());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -75,6 +81,12 @@ public class UtilFile {
 	 */
 	public void setFile(String file) {
 		this.file = new LocalFile(file);
+		try {
+			this.file.setDirectory(new java.io.File( "." ).getCanonicalPath());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public LocalFile getLocalFile() {
@@ -125,18 +137,34 @@ public class UtilFile {
 	 * @return boolean informando se foi ou não excluido
 	 */
 	public boolean excludeFile(){
-		return (new File(this.file.getFileFullName())).delete();
+		boolean retorno;
+		if(this.isExists()) {
+			this.bufferOut = null;
+			this.arquivoLido = null;
+			this.reader = null;
+			retorno = (new File(this.file.getFileFullName())).delete();
+			if(retorno)
+				return retorno;
+			else {
+				System.out.println("### Entender o pq não excluiu: confirme se ele não está aberto em alguma outra variável");
+				return false;
+			}
+		} else {
+			return false;	
+		}
 	}
 
     /**
      * Método para salvar e fechar o arquivo
      */
-    public void saveFile(){
+    public boolean saveFile(){
         try {
         	bufferOut.close();
-        } catch (IOException ex) {
-            ex.printStackTrace();
+        	return true;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        return false;
     }
 
     /**
@@ -318,14 +346,16 @@ public class UtilFile {
 	/**
 	 * Método para liberar arquivo
 	 */
-	public void closeTextFile() {
+	public boolean closeTextFile() {
 		try {
 			reader.close();
-		} catch (IOException e) {
+			return true;
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		arquivoLido = null;
 		reader = null;
+		return false;
 	}
 	
 	/**
