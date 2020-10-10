@@ -13,16 +13,16 @@ import java.util.Date;
  */
 
 public class UtilLog {
-    public static void setLog(String message){
+    public static boolean setLog(String message){
         System.out.println(message);
-        UtilLog.logGenerator("", message);
+        return UtilLog.logGenerator("", message);
     }
-    public static void setLog(String project, String message){
+    public static boolean setLog(String project, String message){
         System.out.println(message);
-        UtilLog.logGenerator(project, message);
+        return UtilLog.logGenerator(project, message);
     }
     
-	private static void logGenerator(String project, String message) {
+	private static boolean logGenerator(String project, String message) {
 		UtilFile file = new UtilFile();
 		SimpleDateFormat dtFormat = new SimpleDateFormat("yyyy-MM-dd") ;
 		SimpleDateFormat hrFormat = new SimpleDateFormat("HH:mm:ss") ;
@@ -31,6 +31,6 @@ public class UtilLog {
 		file.setFile(project + "_LOG_" + dtFormat.format(date) + ".CSV");
 		file.newLine(hrFormat.format(date) + ";" + message);
 		file.saveFile();
-		file.closeTextFile();
+		return true;
 	}
 }
