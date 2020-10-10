@@ -3,7 +3,7 @@
 *
 * @author: Assis Henrique Oliveira Pacheco
 */
-package javaNoob;
+package javaNoob.util;
 
 import static org.junit.jupiter.api.Assertions.*;
 
