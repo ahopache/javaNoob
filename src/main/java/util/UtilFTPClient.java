@@ -183,7 +183,7 @@ public class UtilFTPClient {
 	/**
 	 * Método estatico para verificar o tamanho do arquivo existente no FTP
 	 * 
-	 * @param FTPClient -> contendo a conexao a ser utilizada
+	 * @param client -> contendo a conexao a ser utilizada
 	 * @param fileName  -> nome e local do arquivo
 	 * 
 	 * @return long com os bytes do arquivo
