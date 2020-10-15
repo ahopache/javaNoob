@@ -1,4 +1,4 @@
-/**
+/*
  * encode: utf-8
  * 
  * @author Assis Henrique Oliveira Pacheco
@@ -12,7 +12,10 @@
  * 
  * 
  */
-package util;
+package util.MS;
+
+import util.UtilArray;
+import util.UtilLog;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -20,12 +23,26 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Logger;
 
-public class UtilMSAccess {
-	private Connection con;
-	private Statement stm;
-	private String nomeBanco;
-	private String strConexao;
+public class Access {
+	private static final Logger LOGGER= Logger.getLogger(Access.class.getName());
+
+	private Connection connection;
+	private Statement statement;
+	private String bdName;
+	private String strConnection;
+
+	public Access() {
+		this.connection = null;
+		this.statement = null;
+		this.bdName = null;
+		this.strConnection = null;
+	}
+
+	public String toString(){
+		return "DB name: " + this.bdName + ", String connection: " + this.strConnection;
+	}
 	
 	/**
 	 * 
@@ -43,7 +60,7 @@ public class UtilMSAccess {
         try {
             // Efetuando a conexão
             Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
-            con = DriverManager.getConnection("jdbc:ucanaccess://" + nomeBanco + ";memory=false", "", "");
+            connection = DriverManager.getConnection("jdbc:ucanaccess://" + nomeBanco + ";memory=false", "", "");
         } catch (Exception Driver) {
         	Driver.printStackTrace();
         }
@@ -53,11 +70,11 @@ public class UtilMSAccess {
 	{
 	    try
 	    {
-	        con.close();
+	        connection.close();
 	    }
 	    catch (SQLException sqle)
 	    {
-			UtilLog.setLog("UtilAccess.close():  " + this.nomeBanco);
+			UtilLog.setLog("UtilAccess.close():  " + this.bdName);
 	    	sqle.printStackTrace();
 	    }
 	}
@@ -71,10 +88,10 @@ public class UtilMSAccess {
 	public void clearTable(String tabela)
 	{
 		try {
-			stm = con.createStatement();
-			stm.execute("DELETE * FROM " + tabela + ";");
+			statement = connection.createStatement();
+			statement.execute("DELETE * FROM " + tabela + ";");
 		} catch (SQLException e) {
-			UtilLog.setLog("UtilAccess.clearTable(" + tabela + "): " + this.nomeBanco);
+			UtilLog.setLog("UtilAccess.clearTable(" + tabela + "): " + this.bdName);
 			e.printStackTrace();
 		}
 	}
@@ -83,10 +100,10 @@ public class UtilMSAccess {
 	{
 		try {
 			PreparedStatement pstmt = null;
-			pstmt = con.prepareStatement( sql );
+			pstmt = connection.prepareStatement( sql );
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
-			UtilLog.setLog("UtilAccess.updateTable (" + sql + "): " + this.nomeBanco);
+			UtilLog.setLog("UtilAccess.updateTable (" + sql + "): " + this.bdName);
 
 			e.printStackTrace();
 		}
@@ -100,13 +117,13 @@ public class UtilMSAccess {
 	public void updateTable( String sql, UtilArray parameters){
 		try {
 			PreparedStatement pstmt = null;
-			pstmt = con.prepareStatement( sql );
-			for(int i = 1; i <= parametros.lenght(); i++){
-				pstmt.setString(i, parametros.getItemString( i - 1 )); 
+			pstmt = connection.prepareStatement( sql );
+			for(int i = 1; i <= parameters.lenght(); i++){
+				pstmt.setString(i, parameters.getItemString( i - 1 ));
 			}
 			pstmt.executeUpdate(); 
 		} catch (SQLException e) {
-			UtilLog.setLog("UtilAccess.updateTable ('" + sql + "', '"+ parametros + "'):" + this.nomeBanco);
+			UtilLog.setLog("UtilAccess.updateTable ('" + sql + "', '"+ parameters + "'):" + this.bdName);
 			e.printStackTrace();
 		}
 	}
@@ -115,7 +132,7 @@ public class UtilMSAccess {
 		ResultSet rs = null;
 		Statement stm = null;
 		try {
-			stm = con.createStatement();
+			stm = connection.createStatement();
 			if(sql.toUpperCase().startsWith("DELETE")){
 				stm.execute( sql );
 			}else{
@@ -123,10 +140,9 @@ public class UtilMSAccess {
 			}
 			//rs = stm.executeQuery( SQL );
 		} catch (SQLException e) {
-			UtilLog.setLog("UtilAccess.executeSQL (" + sql + "): " + this.nomeBanco );
+			UtilLog.setLog("UtilAccess.executeSQL (" + sql + "): " + this.bdName );
 			e.printStackTrace();
 		}
-		System.gc();
 		return rs;
 	}
 }

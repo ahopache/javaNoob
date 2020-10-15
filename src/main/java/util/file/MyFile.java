@@ -1,43 +1,32 @@
-/**
+/*
  * encode: utf-8
  * 
  * Classe com métodos para trabalhar com arquivos e diretorios
  *
  * @autor Assis Henrique Oliveira Pacheco
+ *
  * @version 1.0
  *
- * TODO: Ajustar para construtor receber nome de arquivo com caminho completo
- * Atual: Recebe um diretorio
- *
- * @changes from 0.9
- *
  */
-package util;
+package util.file;
+
+import util.model.LocalFile;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-public class UtilFile {
+public class MyFile {
 	private String encode = "UTF-8";
 	private FileInputStream arquivoLido;
 	private BufferedReader reader;
@@ -47,24 +36,24 @@ public class UtilFile {
 	
     /**
      * Construtor que recebe um objeto LocalFile
-     * @param LocalFile
+     * @param file
      */
-	public UtilFile(LocalFile file){
+	public MyFile(LocalFile file){
 		this.file = file;
 	}
 	
 	 /**
      * Construtor que recebe uma string LocalFile
-     * @param arquivo
+     * @param file
      */
-	public UtilFile(String file){
+	public MyFile(String file){
 		this.file = new LocalFile(file);
 	}
 
 	/**
 	 * Construtor sem parametros
 	 */
-	public UtilFile(){
+	public MyFile(){
 		this.file = new LocalFile();
 		try {
 			this.file.setDirectory(new java.io.File( "." ).getCanonicalPath());
@@ -128,6 +117,7 @@ public class UtilFile {
 	 * @return boolean informando se foi ou não excluido
 	 */
 	public boolean deleteFile(){
+		//TODO: Try to understand why sometimes unity test work and sometimes doesn't
 		return this.excludeFile();
 	}
     
@@ -142,7 +132,7 @@ public class UtilFile {
 			this.bufferOut = null;
 			this.arquivoLido = null;
 			this.reader = null;
-			retorno = (new File(this.file.getFileFullName())).delete();
+			retorno = (new java.io.File(this.file.getFileFullName())).delete();
 			if(retorno)
 				return retorno;
 			else {
@@ -191,8 +181,8 @@ public class UtilFile {
 	 * @return
 	 */
 	public boolean renameFile(String newName){
-		File file = new File( this.file.getFileFullName() );
-		File file2 = new File( this.file.getDirectory() + newName );
+		java.io.File file = new java.io.File( this.file.getFileFullName() );
+		java.io.File file2 = new java.io.File( this.file.getDirectory() + newName );
 
 		boolean success = file.renameTo( file2 );
 		if (!success) {
@@ -213,7 +203,7 @@ public class UtilFile {
 	 * @return True/False -> se o arquivo existe
 	 */
 	public boolean isFile(){
-		return new File( this.file.getFileFullName() ).isFile();
+		return new java.io.File( this.file.getFileFullName() ).isFile();
 	}
 
 	/**
@@ -221,7 +211,7 @@ public class UtilFile {
 	 * @return True/False se o arquivo ou pasta existe
 	 */
 	public boolean isExists(){
-		return new File( this.file.getFileFullName() ).exists();
+		return new java.io.File( this.file.getFileFullName() ).exists();
 	}
 	
 	/**
@@ -230,7 +220,7 @@ public class UtilFile {
 	 * @return True/False se pasta foi criada
 	 */
 	public boolean createDirectory(String diretorio){
-		return new File( diretorio ).mkdir();
+		return new java.io.File( diretorio ).mkdir();
 	}
 
 	/**
@@ -238,7 +228,7 @@ public class UtilFile {
 	 * @param directory
 	 */
 	public boolean createDirectoryIfDoesntExists(String directory) {
-		File path = new File( directory ); //( nmPath ).exists();
+		java.io.File path = new java.io.File( directory ); //( nmPath ).exists();
 		if ( !path.exists() ) {
 			path.mkdir();
 		}
@@ -255,7 +245,7 @@ public class UtilFile {
 	 * @return GregorianCalendar
 	 */
 	public GregorianCalendar getFileLastModified(){
-		File file = new File(this.file.getFileFullName());
+		java.io.File file = new java.io.File(this.file.getFileFullName());
 		
 		GregorianCalendar calendar = new GregorianCalendar();
 		calendar.setTimeInMillis(file.lastModified());
@@ -267,9 +257,9 @@ public class UtilFile {
      * Lista arquivos existentes no diretorio setado
      * Armazena na memoria essa lista para posterior consulta
      */
-	public File[] listFilesInDirectory(){
-		File diretorio = new File(this.file.getDirectory());
-		File fList[] = diretorio.listFiles();
+	public java.io.File[] listFilesInDirectory(){
+		java.io.File diretorio = new java.io.File(this.file.getDirectory());
+		java.io.File fList[] = diretorio.listFiles();
 
 		System.out.println("Numero de arquivos no diretorio : " + fList.length );
 
@@ -286,7 +276,7 @@ public class UtilFile {
 	 * @return
 	 */
 	public boolean isFileStartsWithBOM() {
-		File textFile = new File(this.file.getFileFullName());
+		java.io.File textFile = new java.io.File(this.file.getFileFullName());
 		boolean result = false;
 		int[] BYTE_ORDER_MARK = {239, 187, 191};
 		
@@ -399,8 +389,8 @@ public class UtilFile {
 			fileDe.close();
 			filePara.close();
 
-			File arquivoOrigem = new File ( this.file.getFileFullName() );
-			File arquivoCopiado = new File( arquivoPara );
+			java.io.File arquivoOrigem = new java.io.File( this.file.getFileFullName() );
+			java.io.File arquivoCopiado = new java.io.File( arquivoPara );
 			GregorianCalendar dataArquivo = new GregorianCalendar();
 			dataArquivo.setTimeInMillis(  arquivoOrigem.lastModified() );
 

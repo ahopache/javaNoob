@@ -1,5 +1,7 @@
 package util;
 
+import util.file.MyFile;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -23,7 +25,7 @@ public class UtilLog {
     }
     
 	private static boolean logGenerator(String project, String message) {
-		UtilFile file = new UtilFile();
+		MyFile file = new MyFile();
 		SimpleDateFormat dtFormat = new SimpleDateFormat("yyyy-MM-dd") ;
 		SimpleDateFormat hrFormat = new SimpleDateFormat("HH:mm:ss") ;
 		Date date = new Date() ;

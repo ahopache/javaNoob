@@ -2,13 +2,17 @@
  * encode: utf-8
  * 
  * @author Assis Henrique Oliveira Pacheco
+ *
  * @version: 0.9
  * 
  * TODO:
  * - Padronizar documentações em ingles/portugues
  * - Padronizar LOG usando UtilLog
  */
-package util;
+package util.DB;
+
+import util.UtilArray;
+import util.UtilString;
 
 import java.io.File;
 import java.sql.*;
@@ -17,7 +21,8 @@ import java.text.StringCharacterIterator;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class UtilJavaDB {
+public class JavaDB {
+	private Logger logger;
 	protected static final String driver = "org.apache.derby.jdbc.EmbeddedDriver";
 	protected StringBuilder jdbc = new StringBuilder("jdbc:derby:");
 	protected static String _pastaLocal = System.getProperty("user.home") + File.separatorChar + "Documents\\Repositorio\\";
@@ -26,7 +31,7 @@ public class UtilJavaDB {
 	/**
 	 * Método construtor, já cria banco teste se ele não existir
 	 */
-	public UtilJavaDB(String db) {
+	public JavaDB(String db) {
 		this.createDB(db);
 	}
 
@@ -535,5 +540,10 @@ public class UtilJavaDB {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public String toString() {
+		return "UtilJavaDB{jdbc=" + jdbc + '}';
 	}
 }

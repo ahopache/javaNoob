@@ -9,7 +9,7 @@
  * - Padronizar LOG usando UtilLog
  * 
  */
-package util;
+package util.file;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -25,10 +25,10 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 
-public class UtilZip {
+public class Zip {
     private static final int TAMANHO_BUFFER = 2048; // 2 Kb
 
-	public UtilZip() { }
+	public Zip() { }
 
     /**
      * Método para verificar se o arquivo é do tipo GZip
@@ -55,9 +55,9 @@ public class UtilZip {
             zip = new ZipFile( arquivoZip );
             return zip.getName();
         } catch (ZipException ex) {
-            Logger.getLogger(UtilZip.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Zip.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
-            Logger.getLogger(UtilZip.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Zip.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }

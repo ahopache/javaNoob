@@ -1,4 +1,4 @@
-package util;
+package util.model;
 
 import java.io.IOException;
 
