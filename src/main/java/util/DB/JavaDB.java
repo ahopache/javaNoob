@@ -14,13 +14,14 @@ import java.io.File;
 import java.sql.*;
 import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class UtilJavaDB {
 	protected static final String driver = "org.apache.derby.jdbc.EmbeddedDriver";
 	protected StringBuilder jdbc = new StringBuilder("jdbc:derby:");
-	protected static String _pastaLocal = System.getProperty("user.home") + File.separatorChar + "Documents\\Repositorio\\";	
+	protected static String _pastaLocal = System.getProperty("user.home") + File.separatorChar + "Documents\\Repositorio\\";
+	private UtilArray utilArray;
 	
 	/**
 	 * Método construtor, já cria banco teste se ele não existir
@@ -50,9 +51,9 @@ public class UtilJavaDB {
 			conn.close();
 		} catch (SQLException e) {
 			if(db.equals("LOG")){
-				System.out.println("Não foi possivel acessar log!");
+				logger.info("Não foi possivel acessar log!");
 			}else{
-				System.out.println("Outro erro: " + e.getMessage());
+				logger.info("Outro erro: " + e.getMessage());
 				e.printStackTrace();
 			}
 		} catch (ClassNotFoundException e) {
@@ -60,21 +61,13 @@ public class UtilJavaDB {
 		}
 	}
 
-	/**
-	 * Método para enviar comandos ao JavaDB
-	 *
-	 * @param sql -> comando em SQL contendo o comando (insert/update/drop e etc)
-	 */
-	public void sendCommand(StringBuffer sql){
-		this.sendCommand(sql.toString());
-	}
 
 	/**
 	 * Método para enviar ao JavaDB os comandos
 	 *
 	 * @param sql
 	 */
-	public void sendCommand(String sql){
+	public void sendCommand(CharSequence sql){
 		Connection conn;
 		Statement stmt;
 
@@ -223,7 +216,7 @@ public class UtilJavaDB {
 	public static String forRegex(String aRegexFragment){
 	    final StringBuilder result = new StringBuilder();
 
-	    final StringCharacterIterator iterator = 
+	    final CharacterIterator iterator =
 	      new StringCharacterIterator(aRegexFragment)
 	    ;
 	    char character =  iterator.current();
@@ -296,7 +289,7 @@ public class UtilJavaDB {
 	 * @param priLinha
 	 * @return
 	 */
-	protected String getColunaParaInsert(ArrayList<String> dados, String colunaTXT, String priLinha, String tipo) {
+	protected String getColunaParaInsert(List<String> dados, String colunaTXT, String priLinha, String tipo) {
 		return this.getColunaParaInsert(dados,colunaTXT,priLinha,tipo,"\t");
 	}
 	
@@ -308,7 +301,7 @@ public class UtilJavaDB {
 	 * @param separador
 	 * @return
 	 */
-	protected String getColunaParaInsert(ArrayList<String> dados, String colunaTXT, String priLinha, String tipo, String separador) {
+	protected String getColunaParaInsert(List<String> dados, String colunaTXT, String priLinha, String tipo, String separador) {
 		int posicao = this.getPosicaoColuna(colunaTXT, priLinha,separador);
 		String coluna = null;
 		
@@ -391,7 +384,7 @@ public class UtilJavaDB {
 		linha = linha.replaceAll("[^0-9A-Za-záéíóúÁÉÍÓÚàèìòùÀÈÌÒÙãõÃÕâêîôûÂÊÎÔÛäëïöüÄËÏÖÜ \t;_|]", "");
 		colunaPesquisar = colunaPesquisar.replaceAll("[^0-9a-zA-ZáéíóúÁÉÍÓÚàèìòùÀÈÌÒÙãõÃÕâêîôûÂÊÎÔÛäëïöüÄËÏÖÜ \t;_|]", "");
 		
-		ArrayList<String> dados = UtilString.getListFromTextArea(linha, separador);
+		List<String> dados = UtilString.getListFromTextArea(linha, separador);
 		for(posicao = dados.size()-1; posicao >= 0; posicao--) {
 			if(dados.get(posicao).equalsIgnoreCase(colunaPesquisar)) {
 				found = true;
@@ -419,14 +412,14 @@ public class UtilJavaDB {
 	 * @return -> lista com os dados
 	 */
 	public List<String[]> getListDatabase(String table) {
-		UtilArray ua = new UtilArray();
+		utilArray = new UtilArray();
 		
 		try {
 			Class.forName( this.driver );
 			Connection conn = DriverManager.getConnection( jdbc.toString() );
 			Statement stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery(new StringBuilder("SELECT * FROM ").append(table).toString());
-			return ua.converteResultSetEmList(rs);
+			return utilArray.converteResultSetEmList(rs);
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
@@ -448,14 +441,14 @@ public class UtilJavaDB {
 	 * @return -> uma lista com os dados da tabela utilizando o filtro
 	 */
 	public List<String[]> getListDatabaseWithWhere(String table, String where, String columns) {
-		UtilArray ua = new UtilArray();
+		utilArray = new UtilArray();
 		
 		try {
 			Class.forName( this.driver );
 			Connection conn = DriverManager.getConnection( jdbc.toString() );
 			Statement stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery(new StringBuilder("SELECT ").append(columns).append(" FROM ").append(table).append(" ").append(where).toString());
-			return ua.converteResultSetEmList(rs);
+			return utilArray.converteResultSetEmList(rs);
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
@@ -472,9 +465,10 @@ public class UtilJavaDB {
 	 */
 	public static void salvaLog(String txt_log, String txt_projeto) {
 		boolean flag = false;
+		final int limitString = 255;
 		int max = txt_log.length();
-		if(max >= 255)
-			max = 255;
+		if(max >= limitString)
+			max = limitString;
 		Connection conn;
 		Statement stmt;
 		

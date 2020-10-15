@@ -77,7 +77,7 @@ public class UtilFile {
 	/**
 	 * Método para setar o nome do arquivo
 	 *
-	 * @param arquivo -> com o nome e endereço do arquivo
+	 * @param file -> com o nome e endereço do arquivo
 	 */
 	public void setFile(String file) {
 		this.file = new LocalFile(file);
@@ -95,7 +95,7 @@ public class UtilFile {
 	
 	/**
 	 * Método para setar o nome do diretorio
-	 * @param diretorio
+	 * @param directory
 	 */
 	public void setDirectory(String directory) {
 		this.file.setDirectory(directory);
@@ -336,7 +336,6 @@ public class UtilFile {
 
 	/**
 	 * Método para abrir um arquivo em formato texto
-	 * @param arquivo File
 	 */
 	public boolean openTextFile(){
 		return this.openTextFile(encode);

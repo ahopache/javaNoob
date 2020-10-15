@@ -9,16 +9,13 @@ package util;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.StringTokenizer;
-import java.util.Vector;
+import java.util.*;
 
 /**
  * Classe para trabalhar com array/listas
  */
 public class UtilArray {
-	List<Object> listaArray = new Vector<Object>();
+	List<Object> listaArray = new ArrayList<Object>();
 	
 	public UtilArray(){}
 
@@ -36,7 +33,7 @@ public class UtilArray {
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-		return "";	 
+		return "";
 	}
 	
 	public Object getItemObject(int posicao){
@@ -52,11 +49,12 @@ public class UtilArray {
 	 * 
 	 * TODO: Descobrir como funcionar se o separador tiver mais de um caracter (BUG)
 	 * 
-	 * @param texto
+	 * @param text
 	 * @param separador
-	 * @return
+	 *
+	 * @return List of String
 	 */
-	public static ArrayList<String> getListFromTextArea(String text, String separador){
+	public static List<String> getListFromTextArea(String text, String separador){
 		String textoNormalizado = text;
 
 		try{
@@ -75,7 +73,7 @@ public class UtilArray {
 			e.printStackTrace();
 		}
 		
-		ArrayList<String> list = new ArrayList<String>();
+		List<String> list = new ArrayList<String>();
 		if( text.indexOf( separador + separador + "") >= 0) {
 			textoNormalizado = text.replaceAll(separador + separador, "" + separador + "''" + separador + "");
 			while (textoNormalizado.indexOf(separador + separador) >0) {

@@ -11,24 +11,12 @@
  * - Pattern all methods in english version
  * - Translate all docs to english
  * 
- * @version 1.2
- * Incluido construtor recebendo String
- *
- * @changes from 1.1
- * Incluido método: int getColumnPosition(String columnToSearch, String dataForSearch, String separador)
- *
- * @changes from 1.0
- * Incluido método: double similarityIndex(String s1, String s2)
- *  - Esse método compara duas strings e retorna o Jaccard index: https://en.wikipedia.org/wiki/Jaccard_index
- *  - Atraves desse indice, é possivel saber se as strings são semelhantes
- *
- * Removivo método @deprecated: ArrayList<String> getListFromTextAreaV1(String texto, String separador)
- *
- * Melhorias gerais na documentação dos métodos
+ * @version 1.3
  */
 package util;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -60,7 +48,7 @@ public class UtilString {
 	 *
 	 * @return
 	 */
-	public static int getColumnPosition(String columnToSearch, ArrayList<String> dataForSearch, String separador) {
+	public static int getColumnPosition(String columnToSearch, List<String> dataForSearch, String separador) {
 		int posicao;
 		boolean found = false;
 
@@ -87,14 +75,14 @@ public class UtilString {
 	}
 
 	/**
-	 * Método que recebe um texto e transforma em um ArrayList de acordo com o separador
+	 * Método que recebe um texto e transforma em um List de acordo com o separador
 	 * 
 	 * @param texto
 	 * @param separador
 	 * 
 	 * @return
 	 */
-	public static ArrayList<String> getListFromTextArea(String texto, String separador){
+	public static List<String> getListFromTextArea(String texto, String separador){
 		//Ajustes iniciais
 		if(separador.equals(";")) {
 			texto = texto.replaceAll("&AMP;", " ");
@@ -103,7 +91,7 @@ public class UtilString {
 		
 		int textQualifier = 0;
 		
-		ArrayList<String> list = new ArrayList<String>();
+		List<String> list = new ArrayList<String>();
 		
 		StringBuffer txt = new StringBuffer(texto);
 		StringBuffer txt_parcial = new StringBuffer();
@@ -153,17 +141,17 @@ public class UtilString {
 	 * @return
 	 */
 	public static String scapeSpecialCharForInsert(String text){
-		StringBuffer txt = new StringBuffer(text);
-		StringBuilder txt_temp = new StringBuilder();
+		CharSequence txtOld = new StringBuffer(text);
+		StringBuilder txtTemp = new StringBuilder();
 
-		for(int i=0; i<txt.length(); i++) {
-			if(getHexCodeFromChar(txt.charAt(i)).equals("0027")){
-				txt_temp.append("\\\'");
+		for(int i=0; i<txtOld.length(); i++) {
+			if(getHexCodeFromChar(txtOld.charAt(i)).equals("0027")){
+				txtTemp.append("\\\'");
 			}else{
-				txt_temp.append(txt.charAt(i));
+				txtTemp.append(txtOld.charAt(i));
 			}
 		}
-		return txt_temp.toString();
+		return txtTemp.toString();
 	}
 
 	/**
@@ -182,10 +170,10 @@ public class UtilString {
 			text = text.replaceAll("`", "");
 			
 			if( text.lastIndexOf("/") >= text.length()-2 ){
-				text = text + " ";
+				text += " ";
 			}
 			if( text.lastIndexOf("\\") >= text.length()-2 ){
-				text = text + " ";
+				text += " ";
 			}
 
 		}
@@ -206,22 +194,17 @@ public class UtilString {
 		return text;
 	}
 
-	@Deprecated
-	public static double contaCaracteres(String texto, String Carater) {
-		return countChars(texto, Carater);
-	}
-
 	/**
 	 * Método para contar a ocorrencia de um determinado char no texto
 	 *
 	 * @param text
-	 * @param test_char
+	 * @param testChar
 	 *
 	 * @return -> count de quantas ocorrencias foram identificadas
 	 */
-	public static int countChars(String text, String test_char) {
+	public static int countChars(CharSequence text, CharSequence testChar) {
 
-		String rgxFnd = "[^" + test_char + "]*" + test_char;
+		String rgxFnd = "[^" + testChar + "]*" + testChar;
 
 		Pattern pattern = Pattern.compile(rgxFnd);
 		Matcher matcher = pattern.matcher(text);
@@ -324,15 +307,15 @@ public class UtilString {
 	 * Método para avaliar a similaridade entre dois textos
 	 * indice utilizado para comparação: https://en.wikipedia.org/wiki/Jaccard_index
 	 *
-	 * @param s1
-	 * @param s2
+	 * @param string1
+	 * @param string2
 	 *
 	 * @return double -> contento o indice Jaccard
 	 *
 	 * @since 1.1
 	 */
-	public static double similarityIndex(String s1, String s2){
+	public static double similarityIndex(CharSequence string1, CharSequence string2){
 		org.apache.commons.text.similarity.JaccardSimilarity jaccardSimilarity = new org.apache.commons.text.similarity.JaccardSimilarity();
-		return jaccardSimilarity.apply(s1, s2);
+		return jaccardSimilarity.apply(string1, string2);
 	}
 }

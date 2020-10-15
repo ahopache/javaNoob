@@ -17,7 +17,7 @@
 package webAPI;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
@@ -30,7 +30,7 @@ import webAPI.client.security.None;
 
 public class APIClient {
 	protected APISecurity apiSecurity;
-	protected List<APIHeader> listHeader = new ArrayList<>();
+	protected Collection<APIHeader> listHeader = new ArrayList<>();
 	protected DefaultHttpClient client;
 	protected HttpRequestBase sendMethod;
 

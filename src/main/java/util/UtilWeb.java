@@ -15,6 +15,8 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.firefox.FirefoxProfile;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public class UtilWeb {
     protected WebDriver driver;
@@ -142,7 +144,7 @@ public class UtilWeb {
      * @return true/false if page is not found
      */
     private boolean checkHTMLForPageNotFound(String title, String html){
-        ArrayList<String> listTitle = new ArrayList<>();
+        Collection<String> listTitle = new ArrayList<>();
         listTitle.add("Problemas ao carregar a página");
         listTitle.add("Not Found");
         listTitle.add("Whoops! There was an error.");

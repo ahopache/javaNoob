@@ -35,6 +35,10 @@ public class UtilMSAccess {
 		this.connectJDBC(nameConnection);
 	}
 
+	/**
+	 *
+	 * @param nomeBanco
+	 */
 	public void connectJDBC(String nomeBanco) {
         try {
             // Efetuando a conexão
@@ -87,8 +91,13 @@ public class UtilMSAccess {
 			e.printStackTrace();
 		}
 	}
-	
-	public void updateTable( String sql, UtilArray parametros){
+
+	/**
+	 *
+	 * @param sql
+	 * @param parameters
+	 */
+	public void updateTable( String sql, UtilArray parameters){
 		try {
 			PreparedStatement pstmt = null;
 			pstmt = con.prepareStatement( sql );
