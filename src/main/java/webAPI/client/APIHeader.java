@@ -3,7 +3,7 @@
  * 
  * @author Assis Henrique Oliveira Pacheco
  */
-package webAPI;
+package webAPI.client;
 
 public class APIHeader {
 	private String value;

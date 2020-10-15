@@ -3,7 +3,7 @@
  * 
  * @author Assis Henrique Oliveira Pacheco
  */
-package webAPI.security;
+package webAPI.client.security;
 
 import webAPI.APISecurity;
 

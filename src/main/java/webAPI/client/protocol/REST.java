@@ -3,15 +3,15 @@
  * 
  * @author Assis Henrique Oliveira Pacheco
  */
-package webAPI.protocol;
+package webAPI.client.protocol;
 
 import org.apache.http.util.EntityUtils;
 
-import webAPI.API;
-import webAPI.APIHeader;
+import webAPI.APIClient;
+import webAPI.client.APIHeader;
 import webAPI.APISecurity;
 
-public class REST extends API{
+public class REST extends APIClient {
 		
 	public REST(APISecurity apiSecurity) {
 		super(apiSecurity);

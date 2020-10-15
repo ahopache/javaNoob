@@ -1,7 +1,18 @@
-/**
+/*
  * encode: utf-8
- * 
+ *
  * @author Assis Henrique Oliveira Pacheco
+ *
+ * @version: 1.0
+ *
+ * # PortuguesBR
+ * Classe básica para comunicação entre APIs
+ * O protocolo para comunicação fica em suas sub-classes
+ *
+ * # English
+ * Basic class for API communication
+ * The communication protocol is in its subclasses
+ *
  */
 package webAPI;
 
@@ -14,38 +25,56 @@ import org.apache.http.client.methods.HttpPatch;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.impl.client.DefaultHttpClient;
+import webAPI.client.APIHeader;
+import webAPI.client.security.None;
 
-public class API {
-	protected APISecurity apiSecurity = null;
-	protected List<APIHeader> listHeader = new ArrayList<APIHeader>();
-	protected DefaultHttpClient client = new DefaultHttpClient();
+public class APIClient {
+	protected APISecurity apiSecurity;
+	protected List<APIHeader> listHeader = new ArrayList<>();
+	protected DefaultHttpClient client;
 	protected HttpRequestBase sendMethod;
-	
-	public API(APISecurity apiSecurity) {
-		this.apiSecurity = apiSecurity;		
+
+	public APIClient() {
+		this.apiSecurity = new None();
 	}
 	
+	public APIClient(APISecurity apiSecurity) {
+		this.apiSecurity = apiSecurity;
+	}
+
+	private void prepareForSend(APISecurity apiSecurity){
+		this.apiSecurity = apiSecurity;
+		try {
+			client = new DefaultHttpClient();
+		}catch (RuntimeException e){
+			e.printStackTrace();
+		}
+	}
 
 	public String sendGet(String urlCommand, String command) {
+		prepareForSend(apiSecurity);
 		sendMethod = new HttpGet(urlCommand);
 		return this.send(command);
 	}
 
 
 	public String sendPost(String urlCommand, String command) {
+		prepareForSend(apiSecurity);
 		sendMethod = new HttpPost(urlCommand);
 		return this.send(command);
 	}
 
 
 	public String sendPath(String urlCommand, String command) {
+		prepareForSend(apiSecurity);
 		sendMethod = new HttpPatch(urlCommand);
 		return this.send(command);
 	}
 
 	public String sendDelete(String urlCommand, String command) {
+		prepareForSend(apiSecurity);
 		sendMethod = new HttpDelete(urlCommand);
-		return this.send(command);
+		return send(command);
 	}
 
 	protected String send(String command) {

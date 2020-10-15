@@ -3,20 +3,15 @@
  * 
  * @author Assis Henrique Oliveira Pacheco
  */
-package webAPI.protocol;
+package webAPI.client.protocol;
 
-import org.apache.http.client.methods.HttpDelete;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPatch;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.util.EntityUtils;
 
-import webAPI.API;
-import webAPI.APIHeader;
+import webAPI.APIClient;
+import webAPI.client.APIHeader;
 import webAPI.APISecurity;
 
-public class SOAP extends API{
+public class SOAP extends APIClient {
 	
 	public SOAP(APISecurity apiSecurity) {
 		super(apiSecurity);
