@@ -9,12 +9,15 @@ import org.junit.jupiter.api.TestMethodOrder;
 
 import util.UtilWeb;
 
+import java.util.GregorianCalendar;
+
 @TestMethodOrder(OrderAnnotation.class)
 public class UtilWebTest {
+    private UtilWeb utilWeb;
 	
     @Test
     void testNavigateGoogle(){
-    	UtilWeb utilWeb = new UtilWeb();
+    	utilWeb = new UtilWeb();
     	boolean check;
     	String html;
     	
