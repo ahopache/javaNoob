@@ -9,8 +9,8 @@
 	<version>1.0</version>
   
 	<properties>
-		<maven.compiler.source>1.8</maven.compiler.source>
-		<maven.compiler.target>1.8</maven.compiler.target>
+		<maven.compiler.source>15</maven.compiler.source>
+		<maven.compiler.target>15</maven.compiler.target>
 	</properties>
   
 	<build>
@@ -38,6 +38,15 @@
             <version>5.6.2</version>
             <scope>test</scope>
         </dependency>
+
+        <!-- For testing REST API - start -->
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-servlet-initializer</artifactId>
+            <version>3.0.9.Final</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- For testing REST API - end -->
 
         <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-text -->
         <dependency>
@@ -95,6 +104,23 @@
 		    <version>1.1.1</version>
 		    <scope>test</scope>
 		</dependency>
+
+        <!-- web API Server - Start -->
+        <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.14</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.springframework/spring-webmvc -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>5.2.9.RELEASE</version>
+        </dependency>
+        <!-- web API Server - End -->
 		
     </dependencies>
 </project>
