@@ -191,4 +191,16 @@ public class UtilWeb {
         WebElement campoDeTexto = driver.findElement(By.name(fieldName));
         campoDeTexto.submit();
     }
+
+    @Override
+    public String toString() {
+        return "UtilWeb{" +
+                "driver=" + driver +
+                ", isLastNavigateOK=" + isLastNavigateOK +
+                ", lastUrlNavigate='" + lastUrlNavigate + '\'' +
+                ", options=" + options +
+                ", profile=" + profile +
+                ", driverLocation='" + driverLocation + '\'' +
+                '}';
+    }
 }

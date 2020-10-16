@@ -62,7 +62,7 @@ public class UtilString {
 			for(posicao = dataForSearch.size() - 1; posicao >= 0; --posicao) {
 				if (
 						(dataForSearch.get(posicao)
-						).replaceAll("[^0-9A-Za-z ÁÀÄÂÃáàäâãÉÈËÊéèëêÍÌÏÎíìïîÓÒÖÕÔóòöõôÚÙÜÛúùüûÇç \t;,._|]", ""
+						).replaceAll("[^0-9A-Za-z ÁÀÄÂÃáàäâãÉÈËÊéèëêÍÌÏÎíìïîÓÒÖÕÔóòöõôÚÙÜÛúùüûÇç\t;,._|]", ""
 						).equalsIgnoreCase(columnToSearch)
 				) {
 					found = true;
@@ -317,5 +317,12 @@ public class UtilString {
 	public static double similarityIndex(CharSequence string1, CharSequence string2){
 		org.apache.commons.text.similarity.JaccardSimilarity jaccardSimilarity = new org.apache.commons.text.similarity.JaccardSimilarity();
 		return jaccardSimilarity.apply(string1, string2);
+	}
+
+	@Override
+	public String toString() {
+		return "UtilString{" +
+				"string='" + string + '\'' +
+				'}';
 	}
 }

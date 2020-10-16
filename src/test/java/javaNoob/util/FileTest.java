@@ -5,11 +5,10 @@
 */
 package javaNoob.util;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import java.io.IOException;
 import java.util.GregorianCalendar;
 
+import junit.framework.TestResult;
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
@@ -18,12 +17,13 @@ import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import util.model.LocalFile;
 import util.file.MyFile;
 
+import static org.junit.jupiter.api.Assertions.*;
 
 @TestMethodOrder(OrderAnnotation.class)
-class FileTest {
+class FileTest implements junit.framework.Test {
 	private MyFile file;
-	private String fileName = "test.txt";
-	private String directory = "test\\";
+	private final String fileName = "test.txt";
+	private final String directory = "test\\";
 	private LocalFile localFile;
 	
 	/**
@@ -281,5 +281,15 @@ class FileTest {
 		assertTrue(!this.file.isFileStartsWithBOM());
 		assertTrue(file.deleteFile());
 		System.out.println("Teste isFileStartsWithBOM - Fim");
+	}
+
+	@Override
+	public int countTestCases() {
+		return 0;
+	}
+
+	@Override
+	public void run(TestResult testResult) {
+
 	}
 }

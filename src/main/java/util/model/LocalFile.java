@@ -43,4 +43,12 @@ public class LocalFile {
 			
 		return this.directory + this.fileName;
 	}
+
+	@Override
+	public String toString() {
+		return "LocalFile{" +
+				"fileName='" + fileName + '\'' +
+				", directory='" + directory + '\'' +
+				'}';
+	}
 }

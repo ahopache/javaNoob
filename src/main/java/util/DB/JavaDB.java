@@ -26,8 +26,7 @@ public class JavaDB {
 	protected static final String driver = "org.apache.derby.jdbc.EmbeddedDriver";
 	protected StringBuilder jdbc = new StringBuilder("jdbc:derby:");
 	protected static String _pastaLocal = System.getProperty("user.home") + File.separatorChar + "Documents\\Repositorio\\";
-	private UtilArray utilArray;
-	
+
 	/**
 	 * Método construtor, já cria banco teste se ele não existir
 	 */
@@ -417,7 +416,7 @@ public class JavaDB {
 	 * @return -> lista com os dados
 	 */
 	public List<String[]> getListDatabase(String table) {
-		utilArray = new UtilArray();
+		UtilArray utilArray = new UtilArray();
 		
 		try {
 			Class.forName( this.driver );
@@ -446,7 +445,7 @@ public class JavaDB {
 	 * @return -> uma lista com os dados da tabela utilizando o filtro
 	 */
 	public List<String[]> getListDatabaseWithWhere(String table, String where, String columns) {
-		utilArray = new UtilArray();
+		UtilArray utilArray = new UtilArray();
 		
 		try {
 			Class.forName( this.driver );

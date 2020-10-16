@@ -85,4 +85,14 @@ public class APIClient {
 		}
 		return null;
 	}
+
+	@Override
+	public String toString() {
+		return "APIClient{" +
+				"apiSecurity=" + apiSecurity +
+				", listHeader=" + listHeader +
+				", client=" + client.toString() +
+				", sendMethod=" + sendMethod +
+				'}';
+	}
 }

@@ -12,7 +12,7 @@ import util.UtilWeb;
 import java.util.GregorianCalendar;
 
 @TestMethodOrder(OrderAnnotation.class)
-public class UtilWebTest {
+public class WebTest {
     private UtilWeb utilWeb;
 	
     @Test
