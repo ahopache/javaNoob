@@ -3,6 +3,15 @@ version: 2.1
 orbs:
   maven: circleci/maven@0.0.12
 
+commands: # a reusable command with parameters
+   greeting:
+      parameters:
+         to:
+           default: "world"
+           type: string
+      steps:
+         - run: echo "Hello <<parameters.to>>"
+
 jobs:
    my-job:
       docker:
@@ -10,6 +19,9 @@ jobs:
            auth:
              username: mydockerhub-user
              password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
+      steps:
+         - greeting:
+           to: "My-Name"
 
 workflows:
   my-workflow:
