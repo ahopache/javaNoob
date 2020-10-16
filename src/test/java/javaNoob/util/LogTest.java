@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 
 import util.UtilLog;
 
-class UtilLogTest {
+class LogTest {
 
 	@Test
 	void testSetLogString() {

@@ -194,10 +194,10 @@ public class UtilFTPClient {
 		try {
 			fileSize = Long.parseLong( client.getSize( fileName ) );
 		} catch (IllegalStateException e) {
-			UtilLog.setLog("UtilFTP.getFileSize('" + client + "', '" + fileName + "')\nIllegalStateException: " + e.getMessage());
+			UtilLog.setLog("UtilFTP.getFileSize('" + client.toString() + "', '" + fileName + "')\nIllegalStateException: " + e.getMessage());
 			return -1;
 		} catch (IOException e) {
-			UtilLog.setLog("UtilFTP.getFileSize('" + client + "', '" + fileName + "')\nIOException: " + e.getMessage());
+			UtilLog.setLog("UtilFTP.getFileSize('" + client.toString() + "', '" + fileName + "')\nIOException: " + e.getMessage());
 			return -1;
 		}
 		return fileSize;
@@ -347,5 +347,18 @@ public class UtilFTPClient {
 		}
 		
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "UtilFTPClient{" +
+				"client=" + client.toString() +
+				", host='" + host + '\'' +
+				", user='" + user + '\'' +
+				", pass='" + pass + '\'' +
+				", port=" + port +
+				", protocol='" + protocol + '\'' +
+				", pastaAtualFTP='" + pastaAtualFTP + '\'' +
+				'}';
 	}
 }

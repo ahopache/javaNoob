@@ -124,4 +124,11 @@ public class UtilArray {
         
         return ret;   
     }
+
+	@Override
+	public String toString() {
+		return "UtilArray{" +
+				"listaArray=" + listaArray +
+				'}';
+	}
 }

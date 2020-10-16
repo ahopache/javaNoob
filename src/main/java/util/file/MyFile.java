@@ -133,15 +133,12 @@ public class MyFile {
 			this.arquivoLido = null;
 			this.reader = null;
 			retorno = (new java.io.File(this.file.getFileFullName())).delete();
-			if(retorno)
-				return retorno;
-			else {
+			if(!retorno)
 				System.out.println("### Entender o pq não excluiu: confirme se ele não está aberto em alguma outra variável");
-				return false;
-			}
 		} else {
-			return false;	
+			retorno = false;
 		}
+		return retorno;
 	}
 
     /**
@@ -285,23 +282,17 @@ public class MyFile {
 	    int[] firstFewBytes = new int[BYTE_ORDER_MARK.length];
 	    InputStream input = null;
 	    try {
-	      input = new FileInputStream(textFile);
-	      for(int index = 0; index < BYTE_ORDER_MARK.length; ++index){
-	        firstFewBytes[index] = input.read(); //read a single byte
-	      }
-	      result = Arrays.equals(firstFewBytes, BYTE_ORDER_MARK);
+			input = new FileInputStream(textFile);
+	      	for(int index = 0; index < BYTE_ORDER_MARK.length; ++index){
+	        	firstFewBytes[index] = input.read(); //read a single byte
+	      	}
+	      	result = Arrays.equals(firstFewBytes, BYTE_ORDER_MARK);
+			input.close();
 	    } catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	    finally {
-	    	try {
-				input.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-	    }
 	    return result;
 	}
 
@@ -416,5 +407,16 @@ public class MyFile {
 	 */
 	public void setEncode(String encode) {
 		this.encode = encode;
+	}
+
+	@Override
+	public String toString() {
+		return "MyFile{" +
+				"encode='" + encode + '\'' +
+				", arquivoLido=" + arquivoLido.toString() +
+				", reader=" + reader.toString() +
+				", bufferOut=" + bufferOut.toString() +
+				", file=" + file +
+				'}';
 	}
 }
