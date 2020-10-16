@@ -21,12 +21,10 @@ jobs:
              password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
       steps:
          - greeting:
-           to: "My-Name"
+           to: "AHOPACHE"
 
 workflows:
   my-workflow:
     jobs:
       - my-job
-  maven_test:
-    jobs:
       - maven/test # checkout, build, test, and upload test results
