@@ -40,6 +40,6 @@ workflows:
   version: 2
   Example_Workflow:
     jobs:
-      - checkout:
-          requires:
-            - config-jdk
+      - checkout
+      - config-jdk
+      - junit
