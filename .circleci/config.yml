@@ -22,9 +22,9 @@ jobs:
       steps:
          - greeting:
            to: "AHOPACHE"
+         - maven/test # checkout, build, test, and upload test results
 
 workflows:
   my-workflow:
     jobs:
-      - maven/test # checkout, build, test, and upload test results
       - my-job #Config SDK
