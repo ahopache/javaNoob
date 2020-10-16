@@ -14,7 +14,7 @@ import util.UtilFTPClient;
 import util.UtilFTPServer;
 
 @TestMethodOrder(OrderAnnotation.class)
-public class UtilFTPTest {
+public class FTPTest {
 	private UtilFTPClient ftpClient;
 	private UtilFTPServer ftpServer;
 	

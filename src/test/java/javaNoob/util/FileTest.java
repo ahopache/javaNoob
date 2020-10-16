@@ -1,4 +1,4 @@
-/**
+/*
 * encode: utf-8
 *
 * @author: Assis Henrique Oliveira Pacheco
@@ -18,8 +18,9 @@ import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import util.model.LocalFile;
 import util.file.MyFile;
 
+
 @TestMethodOrder(OrderAnnotation.class)
-class UtilFileTest {
+class FileTest {
 	private MyFile file;
 	private String fileName = "test.txt";
 	private String directory = "test\\";
