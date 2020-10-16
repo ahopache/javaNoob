@@ -26,5 +26,5 @@ jobs:
 workflows:
   my-workflow:
     jobs:
-      - my-job
       - maven/test # checkout, build, test, and upload test results
+      - my-job #Config SDK
