@@ -7,6 +7,8 @@ package webAPI.client.security;
 
 import webAPI.APISecurity;
 
+import java.util.Arrays;
+
 public class Key implements APISecurity{
 	private String[] secret;
 
@@ -23,4 +25,10 @@ public class Key implements APISecurity{
 	}
 
 
+	@Override
+	public String toString() {
+		return "Key{" +
+				"secret=" + Arrays.toString(secret) +
+				'}';
+	}
 }

@@ -40,8 +40,12 @@ public class Access {
 		this.strConnection = null;
 	}
 
+	@Override
 	public String toString(){
-		return "DB name: " + this.bdName + ", String connection: " + this.strConnection;
+		return "DB name: " + this.bdName +
+				", String connection: " + this.strConnection +
+				", Connection: " + connection.toString() +
+				", Statement: " + statement.toString();
 	}
 	
 	/**
