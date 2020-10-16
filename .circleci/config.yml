@@ -8,10 +8,9 @@ executors:
           username: mydockerhub-user
           password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
 
-orbs:
-  maven: circleci/maven@0.0.12
-
-workflows:
-  maven_test:
-    jobs:
+jobs:
+  my-job:
+    executor: my-executor
+    steps:
+      - run: echo outside the executor
       - maven/test # checkout, build, test, and upload test results
