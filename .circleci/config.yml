@@ -3,7 +3,7 @@ version: 2.1
 executors:
   my-executor:
     docker:
-      - image: circleci/openjdk:stretch
+      - image: circleci/openjdk:15-jdk-buster
         auth:
           username: mydockerhub-user
           password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
