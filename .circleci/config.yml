@@ -1,6 +1,17 @@
 version: 2.1
 jobs:
-  build:
+  config-jdk:
+    docker:
+      - image: circleci/openjdk:15-jdk-buster
+        auth:
+          username: mydockerhub-user
+          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
+    steps:
+      - run:
+          name: Java version
+          command: java -version
+
+  checkout:
     docker:
       - image: circleci/openjdk:15-jdk-buster
         auth:
@@ -9,12 +20,26 @@ jobs:
     steps:
       - checkout
       - run:
-          name: The First Step
-          command: |
-            echo 'Hello World!'
-            echo 'This is the delivery pipeline'
-      - run:
           name: Code Has Arrived
           command: |
             ls -al
             echo '^^^That should look familiar^^^'
+  junit:
+    docker:
+      - image: circleci/openjdk:15-jdk-buster
+        auth:
+          username: mydockerhub-user
+          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
+    steps:
+      - checkout
+      - run:
+          name: Unit test
+          command: mvn clean test
+
+workflows:
+  version: 2
+  Example_Workflow:
+    jobs:
+      - checkout:
+          requires:
+            - config-jdk
