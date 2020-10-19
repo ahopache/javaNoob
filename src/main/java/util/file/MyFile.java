@@ -69,12 +69,18 @@ public class MyFile {
 	 * @param file -> com o nome e endereço do arquivo
 	 */
 	public void setFile(String file) {
-		this.file = new LocalFile(file);
-		try {
-			this.file.setDirectory(new java.io.File( "." ).getCanonicalPath());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if(this.file == null)
+			this.file = new LocalFile(file);
+		else
+			this.file.setFileName(file);
+
+		if(this.file.getDirectory() == null){
+			try {
+				this.file.setDirectory(new java.io.File( "." ).getCanonicalPath());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 	
@@ -156,13 +162,21 @@ public class MyFile {
 
     /**
      * Método para incluir uma linha no arquivo texto
-     * @param linha
+     * @param line
      */
-    public boolean newLine(String linha){
+    public boolean newLine(String line){
         try {
         	if(bufferOut == null)
         		bufferOut = new OutputStreamWriter( new FileOutputStream(this.file.getFileFullName()),encode);
-        	bufferOut.write( linha );
+
+        	if(line.length() == 0)
+				line = "\n";
+        	else if(line.substring(line.length()-1,line.length()).equals("\n")){
+				// OK, line finish with new line
+			}else
+				line += "\n";
+
+        	bufferOut.write( line );
         	return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -411,12 +425,23 @@ public class MyFile {
 
 	@Override
 	public String toString() {
-		return "MyFile{" +
-				"encode='" + encode + '\'' +
-				", arquivoLido=" + arquivoLido.toString() +
-				", reader=" + reader.toString() +
-				", bufferOut=" + bufferOut.toString() +
+		String toString ="MyFile{" +
+				"encode='" + encode + '\'';
+		if(arquivoLido == null)
+			toString += ", arquivoLido=null";
+		else
+			toString +=	", arquivoLido=" + arquivoLido.toString();
+		if(reader == null)
+			toString += ", reader=null";
+		else
+			toString += ", reader=" + reader.toString();
+		if(bufferOut == null)
+			toString += ", bufferOut=null";
+		else
+			toString += ", bufferOut=" + bufferOut.toString();
+		toString +=
 				", file=" + file +
 				'}';
+		return toString;
 	}
 }
