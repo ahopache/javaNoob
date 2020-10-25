@@ -9,11 +9,11 @@ import java.io.IOException;
 import java.util.GregorianCalendar;
 
 import junit.framework.TestResult;
-import org.junit.Before;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 
-import org.junit.runners.JUnit4;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import util.model.LocalFile;
 import util.file.MyFile;
 
@@ -21,6 +21,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @TestMethodOrder(OrderAnnotation.class)
 class FileTest implements junit.framework.Test {
+	private static final Logger logger = LoggerFactory.getLogger(FileTest.class);
+
 	private static MyFile file;
 	private LocalFile localFile;
 	private final String fileName = "test.txt";
@@ -32,12 +34,12 @@ class FileTest implements junit.framework.Test {
 	@Test
 	@Order(1)
 	void testConstructor() {
-		System.out.println("Teste construtores - Inicio");
+		logger.trace("Teste construtores - Inicio");
 		file = new MyFile(new LocalFile(fileName));
 		assertEquals(file.getLocalFile().getFileName(), fileName);
 		file = new MyFile(fileName);
 		assertEquals(file.getLocalFile().getFileName(), fileName);
-		System.out.println("Teste construtores - Fim");
+		logger.trace("Teste construtores - Fim");
 	}
 
 	/**
@@ -46,10 +48,10 @@ class FileTest implements junit.framework.Test {
 	@Test
 	@Order(2)
 	void testSetDirectory() {
-		System.out.println("Teste setDirectory - Inicio");
+		logger.trace("Teste setDirectory - Inicio");
 		file.setDirectory(directory);
 		assertEquals(directory, file.getLocalFile().getDirectory());
-		System.out.println("Teste setDirectory - Fim");
+		logger.trace("Teste setDirectory - Fim");
 	}
 
 	/**
@@ -58,9 +60,9 @@ class FileTest implements junit.framework.Test {
 	@Test
 	@Order(2)
 	void testCreateDirectoryIfDoesntExists() {
-		System.out.println("Teste createDirectory - Inicio");
+		logger.trace("Teste createDirectory - Inicio");
 		assertTrue(file.createDirectoryIfDoesntExists(directory));
-		System.out.println("Teste createDirectory - Fim");
+		logger.trace("Teste createDirectory - Fim");
 	}
 
 	/**
@@ -69,18 +71,18 @@ class FileTest implements junit.framework.Test {
 	@Test
 	@Order(3)
 	void testCreateFile() {
-		System.out.println("Teste createFile - Inicio");
-		System.out.println("- Teste1: criando por string");
+		logger.trace("Teste createFile - Inicio");
+		logger.trace("- Teste1: criando por string");
 		assertTrue( file.createFile());
 
-		System.out.println("- Teste1: criando pelo objeto LocalFile");
+		logger.trace("- Teste1: criando pelo objeto LocalFile");
 		localFile = new LocalFile();
 		localFile.setDirectory(directory);
 		localFile.setFileName(fileName);
 		file = new MyFile(localFile);
 		assertTrue( file.createFile());
 		localFile = null;
-		System.out.println("Teste createFile - Fim");
+		logger.trace("Teste createFile - Fim");
 	}
 
 	/**
@@ -89,9 +91,9 @@ class FileTest implements junit.framework.Test {
 	@Test
 	@Order(4)
 	void testNewLine() {
-		System.out.println("Teste newLine - Inicio");
+		logger.trace("Teste newLine - Inicio");
 		assertTrue( file.newLine("teste salvar uma linha no arquivo"));
-		System.out.println("Teste newLine - Fim");
+		logger.trace("Teste newLine - Fim");
 	}
 
 	/**
@@ -100,9 +102,9 @@ class FileTest implements junit.framework.Test {
 	@Test
 	@Order(5)
 	void testSaveFile() throws IOException {
-		System.out.println("Teste saveFile - Inicio");
+		logger.trace("Teste saveFile - Inicio");
 		assertTrue( file.saveFile());
-		System.out.println("Teste saveFile - Fim");
+		logger.trace("Teste saveFile - Fim");
 	}
 
 	/**
@@ -111,9 +113,9 @@ class FileTest implements junit.framework.Test {
 	@Test
 	@Order(6)
 	void testOpenTextFile() throws IOException {
-		System.out.println("Teste openTextFile - Inicio");
+		logger.trace("Teste openTextFile - Inicio");
 		assertTrue( file.openTextFile() );
-		System.out.println("Teste openTextFile - Fim");
+		logger.trace("Teste openTextFile - Fim");
 	}
 
 	/**
@@ -122,9 +124,9 @@ class FileTest implements junit.framework.Test {
 	@Test
 	@Order(7)
 	void testGetNextLineFromFile() throws IOException {
-		System.out.println("Teste getNextLine - Inicio");
+		logger.trace("Teste getNextLine - Inicio");
 		assertTrue( file.getNextLineFromFile().length() > 10);
-		System.out.println("Teste getNextLine - Fim");
+		logger.trace("Teste getNextLine - Fim");
 	}
 
 	/**
@@ -133,9 +135,9 @@ class FileTest implements junit.framework.Test {
 	@Test
 	@Order(8)
 	void testCloseFile() {
-		System.out.println("Teste closeFile - Inicio");
+		logger.trace("Teste closeFile - Inicio");
 		assertTrue( file.closeTextFile());
-		System.out.println("Teste closeFile - Fim");
+		logger.trace("Teste closeFile - Fim");
 	}
 
 	/**
@@ -144,13 +146,13 @@ class FileTest implements junit.framework.Test {
 	@Test
 	@Order(9)
 	void testRenameFile() throws IOException {
-		System.out.println("Teste renomear arquivo - Inicio");
-		System.out.println("Renomear de: " + file.getLocalFile().getFileFullName());
-		System.out.println("Para: " + file.getLocalFile().getDirectory() + "_" + fileName);
+		logger.trace("Teste renomear arquivo - Inicio");
+		logger.trace("Renomear de: " + file.getLocalFile().getFileFullName());
+		logger.trace("Para: " + file.getLocalFile().getDirectory() + "_" + fileName);
 		assertTrue( file.renameFile("_" + fileName) );
-		System.out.println("Voltando para: " + file.getLocalFile().getDirectory() + fileName);
+		logger.trace("Voltando para: " + file.getLocalFile().getDirectory() + fileName);
 		assertTrue( file.renameFile(fileName) );
-		System.out.println("Teste renomear arquivo - Fim");
+		logger.trace("Teste renomear arquivo - Fim");
 	}
 
 	/**
@@ -159,9 +161,9 @@ class FileTest implements junit.framework.Test {
 	@Test
 	@Order(10)
 	void testGetFileLastModified() throws IOException {
-		System.out.println("Teste getLastModified - Inicio");
+		logger.trace("Teste getLastModified - Inicio");
 		assertTrue( file.getFileLastModified().before(new GregorianCalendar()));
-		System.out.println("Teste getLastModified - Fim");
+		logger.trace("Teste getLastModified - Fim");
 	}
 
 	/**
@@ -170,10 +172,10 @@ class FileTest implements junit.framework.Test {
 	@Test
 	@Order(11)
 	void testIsFile() throws IOException {
-		System.out.println("Teste isFile - Inicio");
+		logger.trace("Teste isFile - Inicio");
 		assertTrue( file.isFile());
 		assertTrue( file.isExists());
-		System.out.println("Teste isFile - Fim");
+		logger.trace("Teste isFile - Fim");
 	}
 
 	/**
@@ -182,10 +184,10 @@ class FileTest implements junit.framework.Test {
 	@Test
 	@Order(12)
 	void testCopyFile() throws IOException {
-		System.out.println("Teste copyFile - Inicio");
+		logger.trace("Teste copyFile - Inicio");
 		assertTrue( file.copyFile("copy_" + fileName) );
 		assertTrue( file.copyFile(fileName) );
-		System.out.println("Teste copyFile - Fim");
+		logger.trace("Teste copyFile - Fim");
 	}
 
 	/**
@@ -194,9 +196,9 @@ class FileTest implements junit.framework.Test {
 	@Test
 	@Order(13)
 	void testListFilesInDirectory() {
-		System.out.println("Teste listFiles - Inicio");
+		logger.trace("Teste listFiles - Inicio");
 		assertTrue(file.listFilesInDirectory().length >= 0);
-		System.out.println("Teste listFiles - Fim");
+		logger.trace("Teste listFiles - Fim");
 	}
 
 	/**
@@ -205,9 +207,9 @@ class FileTest implements junit.framework.Test {
 	@Test
 	@Order(14)
 	void testIsFileStartsWithBOM() throws IOException {
-		System.out.println("Teste isFileStartsWithBOM - Inicio");
+		logger.trace("Teste isFileStartsWithBOM - Inicio");
 		assertTrue(!this.file.isFileStartsWithBOM());
-		System.out.println("Teste isFileStartsWithBOM - Fim");
+		logger.trace("Teste isFileStartsWithBOM - Fim");
 	}
 
 	/**
@@ -225,10 +227,10 @@ class FileTest implements junit.framework.Test {
 	 */
 	@Test
 	void testSetFile() {
-		System.out.println("Teste setFile - Inicio");
+		logger.trace("Teste setFile - Inicio");
 		file.setFile(fileName);
 		assertEquals(fileName, file.getLocalFile().getFileName());
-		System.out.println("Teste setFile - Fim");
+		logger.trace("Teste setFile - Fim");
 	}
 
 	/**'
@@ -236,9 +238,9 @@ class FileTest implements junit.framework.Test {
 	 */
 	@Test
 	void testGetEncode() {
-		System.out.println("Teste getEncode - Inicio");
+		logger.trace("Teste getEncode - Inicio");
 		assertEquals("UTF-8",this.file.getEncode());
-		System.out.println("Teste getEncode - Fim");
+		logger.trace("Teste getEncode - Fim");
 	}
 
 	/**
@@ -246,13 +248,13 @@ class FileTest implements junit.framework.Test {
 	 */
 	@Test
 	void testSetEncode() {
-		System.out.println("Teste setEncode - Inicio");
+		logger.trace("Teste setEncode - Inicio");
 		assertEquals("UTF-8", this.file.getEncode());
 		this.file.setEncode("teste");
 		assertEquals("teste", this.file.getEncode());
 		this.file.setEncode("UTF-8");
 		assertEquals("UTF-8", this.file.getEncode());
-		System.out.println("Teste setEncode - Fim");
+		logger.trace("Teste setEncode - Fim");
 	}
 
 	@Override
