@@ -8,11 +8,15 @@
 package util;
 
 import org.apache.commons.net.ftp.FTPClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.io.*;
 
 public class UtilFTPClient {
+	private static final Logger logger = LoggerFactory.getLogger(UtilFTPServer.class);
+
 	protected FTPClient client;
 	
 	protected String host;
@@ -66,13 +70,13 @@ public class UtilFTPClient {
 		this.host = host;
 		this.user = user;
 		this.pass = pass;
-		if(protocol == null){
+		//if(protocol == null){
 			return this.connectFTP(host, user, pass);
-		}else if(protocol.equals("SSL")){
+		/*}else if(protocol.equals("SSL")){
 			//TODO: Criar script para conectar usando protocolo SSL
 			return false;
 		}
-		return false;
+		return false;*/
 	}
 
 	/**
@@ -99,11 +103,12 @@ public class UtilFTPClient {
 			client.login( user, pass );
 
 		} catch (Exception e) {
-			UtilLog.setLog("UtilFTP.connect('" + host + "', '" + user + "', **password**, " + port + ")\nException: " + e.getMessage());
+			logger.error("Exception");
+			logger.error("UtilFTP.connect('" + host + "', '" + user + "', **password**, " + port + ")\nException: " + e.getMessage());
 			status = false;
 		} finally {
 			if(status == true)
-				UtilLog.setLog("FTP HOST " + host + " conectou..." );
+				logger.error("FTP HOST " + host + " conectou..." );
 		}
 
 		return status;
@@ -147,7 +152,7 @@ public class UtilFTPClient {
 			client = new FTPClient();
 			client.login( user, pass );
 		} catch (Exception e) {
-			UtilLog.setLog("UtilFTP.connectFTP('" + host + "', '" + user + "', **password**)\nException: " + e.getMessage());
+			logger.error("UtilFTP.connectFTP('" + host + "', '" + user + "', **password**)\nException: " + e.getMessage());
 			return false;
 		}
 		return true;
@@ -194,10 +199,12 @@ public class UtilFTPClient {
 		try {
 			fileSize = Long.parseLong( client.getSize( fileName ) );
 		} catch (IllegalStateException e) {
-			UtilLog.setLog("UtilFTP.getFileSize('" + client.toString() + "', '" + fileName + "')\nIllegalStateException: " + e.getMessage());
+			logger.error("IllegalStateException");
+			logger.error("UtilFTP.getFileSize('" + client.toString() + "', '" + fileName + "')\nIllegalStateException: " + e.getMessage());
 			return -1;
 		} catch (IOException e) {
-			UtilLog.setLog("UtilFTP.getFileSize('" + client.toString() + "', '" + fileName + "')\nIOException: " + e.getMessage());
+			logger.error("IOException");
+			logger.error("UtilFTP.getFileSize('" + client.toString() + "', '" + fileName + "')\nIOException: " + e.getMessage());
 			return -1;
 		}
 		return fileSize;
@@ -216,10 +223,12 @@ public class UtilFTPClient {
 		try {
 			retorno = Long.parseLong( client.getSize( fileName ) );
 		} catch (IllegalStateException e) {
-			UtilLog.setLog("UtilFTP.getFileSize('" + fileName + "')\nIllegalStateException: " + e.getMessage());
+			logger.error("IllegalStateException");
+			logger.error("UtilFTP.getFileSize('" + fileName + "')\nIllegalStateException: " + e.getMessage());
 			return -1;
 		} catch (IOException e) {
-			UtilLog.setLog("UtilFTP.getFileSize('" + fileName + "')\nIOException: " + e.getMessage());
+			logger.error("IOException");
+			logger.error("UtilFTP.getFileSize('" + fileName + "')\nIOException: " + e.getMessage());
 			return -1;
 		}
 		return retorno;
@@ -237,7 +246,8 @@ public class UtilFTPClient {
 			client.storeFile(localFile, input);
 			input.close();
 		} catch (Exception e) {
-			UtilLog.setLog("UtilFTP.putFileTXT('" + localFile + "')\nException: " + e.getMessage());
+			logger.error("Exception");
+			logger.error("UtilFTP.putFileTXT('" + localFile + "')\nException: " + e.getMessage());
 			return false;
 		}
 		return true;
@@ -256,7 +266,8 @@ public class UtilFTPClient {
 		try {
 			output = new FileOutputStream(localFile);
 		} catch (FileNotFoundException e) {
-			UtilLog.setLog("UtilFTP.getFileTXT('" + localFile + "', '" + hostFile + "')\nFileNotFoundException: " + e.getMessage());
+			logger.error("FileNotFoundException");
+			logger.error("UtilFTP.getFileTXT('" + localFile + "', '" + hostFile + "')\nFileNotFoundException: " + e.getMessage());
 			return false;
 		}
 
@@ -264,7 +275,8 @@ public class UtilFTPClient {
 			client.retrieveFile(hostFile, output);
 			output.close();
 		} catch (IOException e) {
-			UtilLog.setLog("UtilFTP.getFileTXT('" + localFile + "', '" + hostFile + "')\nIOException: " + e.getMessage());
+			logger.error("IOException");
+			logger.error("UtilFTP.getFileTXT('" + localFile + "', '" + hostFile + "')\nIOException: " + e.getMessage());
 			return false;
 		}
 
@@ -300,15 +312,17 @@ public class UtilFTPClient {
 	public boolean delFile(String hostFile) {
 		try {
 			if(!client.isConnected()) {
-				UtilLog.setLog("Caiu, reconectando" );
+				logger.error("Caiu, reconectando" );
 				this.connect();
 			}
 			client.deleteFile(hostFile);
 		} catch (FileNotFoundException e) {
-			UtilLog.setLog("UtilFTP.delFile('" + hostFile + "')\nFileNotFoundException: " + e.getMessage());
+			logger.error("FileNotFoundException");
+			logger.error("UtilFTP.delFile('" + hostFile + "')\nFileNotFoundException: " + e.getMessage());
 			return false;
-		} catch (IOException e) {		
-			UtilLog.setLog("UtilFTP.delFile('" + hostFile + "')\nIOException: " + e.getMessage());
+		} catch (IOException e) {
+			logger.error("IOException");
+			logger.error("UtilFTP.delFile('" + hostFile + "')\nIOException: " + e.getMessage());
 			return false;
 		}
 		return true;
@@ -324,10 +338,12 @@ public class UtilFTPClient {
 			client.disconnect();
 			client = null;
 		} catch (IllegalStateException e) {
-			UtilLog.setLog("UtilFTP.disconnect()\nIllegalStateException: " + e.getMessage());
+			logger.error("IllegalStateException");
+			logger.error("UtilFTP.disconnect()\nIllegalStateException: " + e.getMessage());
 			return false;
 		} catch (IOException e) {
-			UtilLog.setLog("UtilFTP.disconnect()\nIOException: " + e.getMessage());
+			logger.error("IOException");
+			logger.error("UtilFTP.disconnect()\nIOException: " + e.getMessage());
 			return false;
 		}
 		return true;
@@ -342,7 +358,8 @@ public class UtilFTPClient {
 			client.cwd( directory );
 			pastaAtualFTP = directory;
 		} catch(Exception e){
-			UtilLog.setLog("UtilFTP.changeDirectory('" + directory + "')\nException: " + e.getMessage());
+			logger.error("Exception");
+			logger.error("UtilFTP.changeDirectory('" + directory + "')\nException: " + e.getMessage());
 			return false;
 		}
 		

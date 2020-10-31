@@ -16,13 +16,13 @@ import util.UtilString;
 
 import java.io.File;
 import java.sql.*;
-import java.text.CharacterIterator;
-import java.text.StringCharacterIterator;
 import java.util.List;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class JavaDB {
-	private Logger logger;
+	private static final Logger logger = LoggerFactory.getLogger(JavaDB.class);
+
 	protected static final String driver = "org.apache.derby.jdbc.EmbeddedDriver";
 	protected StringBuilder jdbc = new StringBuilder("jdbc:derby:");
 	protected static String _pastaLocal = System.getProperty("user.home") + File.separatorChar + "Documents\\Repositorio\\";
@@ -31,7 +31,9 @@ public class JavaDB {
 	 * Método construtor, já cria banco teste se ele não existir
 	 */
 	public JavaDB(String db) {
-		this.createDB(db);
+		logger.info("try to create DB");
+		createDB(db);
+		logger.info("DB created");
 	}
 
 	/**
@@ -88,8 +90,18 @@ public class JavaDB {
 			conn.close();
 
 		} catch (ClassNotFoundException e) {
+			logger.error("ClassNotFoundException");
+			logger.info("Driver: " + driver);
+			logger.info("JDBC: " + jdbc);
+			logger.info("SQL: " + sql);
+			logger.error(e.toString());
 			e.printStackTrace();
 		} catch (SQLException e) {
+			logger.error("SQLException");
+			logger.info("Driver: " + driver);
+			logger.info("JDBC: " + jdbc);
+			logger.info("SQL: " + sql);
+			logger.error(e.toString());
 			checkSQLException(sql.toString(), e);
 		}
 	}
@@ -104,36 +116,35 @@ public class JavaDB {
 	 * - Caso seja um insert em lotes, quebra em inserts únicos e reenvia;
 	 *
 	 * Pendencias:
-	 * TODO: Concluir validação de erros, para correção de dados
+	 * TODO: Achar uma forma de sinalizar os erros não corrigidos
 	 */
 	private boolean checkSQLException(String sql, SQLException e) {
+		logger.info("Trying to fix SQL Exception");
 		List a;
 
+		logger.info("Message: " + e.getMessage());
 		if(e.getMessage().equals("The resulting value is outside the range for the data type DECIMAL/NUMERIC(31,0).")) {
 			a = UtilArray.getListFromTextArea(sql, ") , (");
 			if(a.size() > 1) {
-				System.out.print("Corrigindo..." + "");
-				System.out.println(a.size());
+				logger.info("Mais de uma SQL identificada: " + a.size());
+				logger.info("Enviando uma a uma até achar a que tem erro");
 				String insert_sql = a.get(0).toString();
 				for (int i = 0; i < a.size(); i++) {
 					if (i == 0) {
 						this.sendCommand(a.get(i).toString() + ")");
 						insert_sql = a.get(0).toString().substring(0, a.get(0).toString().indexOf(") values (")) + ") values ";
 					} else if(i == a.size() - 1){
-						System.out.print("");
-						System.out.println(",");
 						this.sendCommand(insert_sql + "(" + a.get(i));
 					} else {
-						System.out.print(".");
 						this.sendCommand(insert_sql + "(" + a.get(i) + ")");
 					}
 				}
 			}
 		}else if(e.getMessage().equals("The resulting value is outside the range for the data type INTEGER.")) {
-			System.out.println("Pulei registro com erro");
+			logger.info("Pulei registro com erro");
 		}else {
-			System.out.println(sql);
-			System.out.println(e.getMessage());
+			logger.info("Error didn't fix!");
+			logger.info("SQL: " + sql);
 		}
 		
 		return true;
@@ -161,6 +172,10 @@ public class JavaDB {
 			    }
 			}
 		} catch (SQLException e) {
+			logger.error("SQLException");
+			logger.info("Driver: " + driver);
+			logger.info("JDBC: " + jdbc);
+			logger.error(e.toString());
 			e.printStackTrace();
 		}
 		return flag;
@@ -175,12 +190,12 @@ public class JavaDB {
 	 */
 	public void createTable(String table_name, String columns) {
 		if( this.checkIfTableExists( table_name ) ) {
-			System.out.print("Delete table: " + table_name);
+			logger.info("Delete table: " + table_name);
 			this.sendCommand(new StringBuilder("DROP TABLE ").append(table_name).toString());
 		}
-		System.out.print("Create table: " + table_name);
+		logger.info("Create table: " + table_name);
 		this.sendCommand(new StringBuilder("create table ").append(table_name).append(" ").append(columns).toString());
-		System.out.println(".tabela criada!");
+		logger.info(".tabela criada!");
 	}
 	
 	/**
@@ -191,9 +206,9 @@ public class JavaDB {
 	 */
 	public void createTableWithoutDrop(String table_name, String columns) {
 		if( !this.checkIfTableExists( table_name ) ) {
-			System.out.print("Create table: " + table_name);
+			logger.info("Create table: " + table_name);
 			this.sendCommand(new StringBuilder("create table ").append(table_name).append(" ").append(columns).toString());
-			System.out.println("table created!");
+			logger.info("table created!");
 		}
 	}
 	
@@ -207,84 +222,6 @@ public class JavaDB {
 		this.sendCommand( "insert into " + tableName + " values(" + linha + ")" );
 	}
 
-	/**
-	 * Método para realizar regex
-	 * @autor Fagner
-	 *
-	 * Pendência: Entender se ele deve ficar aqui ou migrar para UtilString
-	 *
-	 * @param aRegexFragment
-	 * @return
-	 */
-	@Deprecated
-	public static String forRegex(String aRegexFragment){
-	    final StringBuilder result = new StringBuilder();
-
-	    final CharacterIterator iterator =
-	      new StringCharacterIterator(aRegexFragment)
-	    ;
-	    char character =  iterator.current();
-	    while (character != CharacterIterator.DONE ){
-	      /*
-	       All literals need to have backslashes doubled.
-	      */
-	      if (character == '.') {
-	        result.append("\\.");
-	      }
-	      else if (character == '\\') {
-	        result.append("\\\\");
-	      }
-	      else if (character == '?') {
-	        result.append("\\?");
-	      }
-	      else if (character == '*') {
-	        result.append("\\*");
-	      }
-	      else if (character == '+') {
-	        result.append("\\+");
-	      }
-	      else if (character == '&') {
-	        result.append("\\&");
-	      }
-	      else if (character == ':') {
-	        result.append("\\:");
-	      }
-	      else if (character == '{') {
-	        result.append("\\{");
-	      }
-	      else if (character == '}') {
-	        result.append("\\}");
-	      }
-	      else if (character == '[') {
-	        result.append("\\[");
-	      }
-	      else if (character == ']') {
-	        result.append("\\]");
-	      }
-	      else if (character == '(') {
-	        result.append("\\(");
-	      }
-	      else if (character == ')') {
-	        result.append("\\)");
-	      }
-	      else if (character == '^') {
-	        result.append("\\^");
-	      }
-	      else if (character == '$') {
-	        result.append("\\$");
-	      }
-	      else {
-	        //the char is not a special one
-	        //add it to the result as is
-	        result.append(character);
-	      }
-	      character = iterator.next();
-	    }
-	    return result.toString();
-	  }
-
-	
-	
 	/**
 	 * Método para retornar a coluna no modelo para realizar incluir no comando de Insert
 	 *
@@ -316,12 +253,19 @@ public class JavaDB {
 			try {
 				coluna = dados.get(posicao);
 			}catch (IndexOutOfBoundsException e){
-				System.out.println("Não localizei a coluna:" + colunaTXT);
-				System.out.println("Em: " + priLinha);
+				logger.error("IndexOutOfBoundsException");
+				logger.info("Driver: " + driver);
+				logger.info("JDBC: " + jdbc);
+				logger.error(e.toString());
+				logger.info("Não localizei a coluna:" + colunaTXT);
+				logger.info("Em: " + priLinha);
 				e.printStackTrace();
 				System.exit(1);
 			}catch ( Exception e){
-				System.out.println("Outro erro");
+				logger.error("Exception");
+				logger.info("Driver: " + driver);
+				logger.info("JDBC: " + jdbc);
+				logger.error(e.toString());
 				e.printStackTrace();
 				System.exit(1);
 			}
@@ -425,11 +369,19 @@ public class JavaDB {
 			ResultSet rs = stmt.executeQuery(new StringBuilder("SELECT * FROM ").append(table).toString());
 			return utilArray.converteResultSetEmList(rs);
 		} catch (ClassNotFoundException e) {
+			logger.error("ClassNotFoundException");
+			logger.info("Driver: " + driver);
+			logger.info("JDBC: " + jdbc);
+			logger.error(e.toString());
 			e.printStackTrace();
 		} catch (SQLException e) {
 		    if(jdbc.toString().equals("jdbc:derby:LOG")){
-                System.out.println("Não foi possivel acessar o LOG de utilJavaDB");
+                logger.info("Não foi possivel acessar o LOG de utilJavaDB");
             }else{
+				logger.error("SQLException");
+				logger.info("Driver: " + driver);
+				logger.info("JDBC: " + jdbc);
+				logger.error(e.toString());
                 e.printStackTrace();
             }
 		}
@@ -454,8 +406,16 @@ public class JavaDB {
 			ResultSet rs = stmt.executeQuery(new StringBuilder("SELECT ").append(columns).append(" FROM ").append(table).append(" ").append(where).toString());
 			return utilArray.converteResultSetEmList(rs);
 		} catch (ClassNotFoundException e) {
+			logger.error("ClassNotFoundException");
+			logger.info("Driver: " + driver);
+			logger.info("JDBC: " + jdbc);
+			logger.error(e.toString());
 			e.printStackTrace();
 		} catch (SQLException e) {
+			logger.error("SQLException");
+			logger.info("Driver: " + driver);
+			logger.info("JDBC: " + jdbc);
+			logger.error(e.toString());
 			e.printStackTrace();
 		}
 		return null;
@@ -504,9 +464,12 @@ public class JavaDB {
 			conn.close();
 		} catch (ClassNotFoundException | SQLException e) {
 			if(e.getMessage().contains("Failed to start database 'log' with class loader jdk.internal.loader.ClassLoaders")){
-				System.out.println("Continuando....");
+				logger.info("Continuando após erro....");
 			}else{
-				System.out.println("Mensagem: " + e.getMessage());
+				logger.error(e.getClass().toString());
+				logger.info("Driver: " + driver);
+				logger.error(e.toString());
+				logger.trace("Mensagem: " + e.getMessage());
 				e.printStackTrace();
 			}
 		}
@@ -527,7 +490,7 @@ public class JavaDB {
 			rs = stmt.executeQuery("Select * from log");
 			
 			while (rs.next()) {//Consulta
-				System.out.println(
+				logger.trace(
 						rs.getString("data") + " - " +
 						rs.getString("log")
 				);
@@ -535,8 +498,16 @@ public class JavaDB {
 			stmt.close();
 			conn.close();
 		} catch (ClassNotFoundException e) {
+			logger.error("ClassNotFoundException");
+			logger.info("Driver: " + driver);
+			logger.info("JDBC: " + jdbc);
+			logger.error(e.toString());
 			e.printStackTrace();
 		} catch (SQLException e) {
+			logger.error("SQLException");
+			logger.info("Driver: " + driver);
+			logger.info("JDBC: " + jdbc);
+			logger.error(e.toString());
 			e.printStackTrace();
 		}
 	}

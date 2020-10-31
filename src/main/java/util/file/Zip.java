@@ -11,6 +11,8 @@
  */
 package util.file;
 
+import org.slf4j.LoggerFactory;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -26,6 +28,7 @@ import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 
 public class Zip {
+    private static final org.slf4j.Logger logger = LoggerFactory.getLogger(Zip.class);
     private static final int TAMANHO_BUFFER = 2048; // 2 Kb
 
 	public Zip() { }
@@ -44,6 +47,9 @@ public class Zip {
     		magic = raf.read() & 0xff | ((raf.read() << 8) & 0xff00);
     		raf.close();
     	} catch (Throwable e) {
+            logger.error("Throwable");
+            logger.info("File: " + f.toString());
+            logger.error(e.toString());
     		e.printStackTrace(System.err);
     	}
     	return magic == GZIPInputStream.GZIP_MAGIC;
@@ -54,10 +60,14 @@ public class Zip {
         try {
             zip = new ZipFile( arquivoZip );
             return zip.getName();
-        } catch (ZipException ex) {
-            Logger.getLogger(Zip.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(Zip.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ZipException e) {
+            logger.error("ZipException");
+            logger.info("File: " + arquivoZip.toString());
+            logger.error(e.toString());
+        } catch (IOException e) {
+            logger.error("IOException");
+            logger.info("File: " + arquivoZip.toString());
+            logger.error(e.toString());
         }
         return null;
     }
@@ -72,6 +82,10 @@ public class Zip {
     	try {
 			this.extractZip( new File (arquivoZip), new File (diretorio) );
 		} catch (IOException e) {
+            logger.error("IOException");
+            logger.info("File: " + arquivoZip);
+            logger.info("Folder: " + diretorio);
+            logger.error(e.toString());
 			e.printStackTrace();
 		}
     }
