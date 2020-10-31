@@ -10,6 +10,8 @@
  */
 package util.file;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import util.model.LocalFile;
 
 import java.io.BufferedReader;
@@ -27,6 +29,8 @@ import java.util.Arrays;
 import java.util.GregorianCalendar;
 
 public class MyFile {
+	private static final Logger logger = LoggerFactory.getLogger(MyFile.class);
+
 	private String encode = "UTF-8";
 	private FileInputStream arquivoLido;
 	private BufferedReader reader;
@@ -58,6 +62,9 @@ public class MyFile {
 		try {
 			this.file.setDirectory(new java.io.File( "." ).getCanonicalPath());
 		} catch (IOException e) {
+			logger.error("IOException");
+			logger.info("File full name: " + this.file.getFileFullName());
+			logger.error(e.toString());
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -78,6 +85,9 @@ public class MyFile {
 			try {
 				this.file.setDirectory(new java.io.File( "." ).getCanonicalPath());
 			} catch (IOException e) {
+				logger.error("IOException");
+				logger.info("File full name: " + this.file.getFileFullName());
+				logger.error(e.toString());
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
@@ -112,7 +122,10 @@ public class MyFile {
 		try {
 			bufferOut = new OutputStreamWriter( new FileOutputStream(this.file.getFileFullName()), encode);
 			return true;
-		} catch (IOException ex) {
+		} catch (IOException e) {
+			logger.error("IOException");
+			logger.info("File full name: " + this.file.getFileFullName());
+			logger.error(e.toString());
 			return false;
 		}
 	}
@@ -141,6 +154,7 @@ public class MyFile {
 			retorno = (new java.io.File(this.file.getFileFullName())).delete();
 			if(!retorno)
 				System.out.println("### Entender o pq não excluiu: confirme se ele não está aberto em alguma outra variável");
+				logger.error("File can't be excluded: " + this.file.getFileFullName());
 		} else {
 			retorno = false;
 		}
@@ -155,6 +169,9 @@ public class MyFile {
         	bufferOut.close();
         	return true;
         } catch (Exception e) {
+			logger.error("Exception");
+			logger.info("File full name: " + this.file.getFileFullName());
+			logger.error(e.toString());
             e.printStackTrace();
         }
         return false;
@@ -169,7 +186,7 @@ public class MyFile {
         	if(bufferOut == null)
         		bufferOut = new OutputStreamWriter( new FileOutputStream(this.file.getFileFullName()),encode);
 
-        	if(line.length() == 0)
+        	if(line.isEmpty())
 				line = "\n";
         	else if(line.substring(line.length()-1,line.length()).equals("\n")){
 				// OK, line finish with new line
@@ -179,6 +196,9 @@ public class MyFile {
         	bufferOut.write( line );
         	return true;
         } catch (Exception e) {
+			logger.error("Exception");
+			logger.info("File full name: " + this.file.getFileFullName());
+			logger.error(e.toString());
             e.printStackTrace();
         }
         return false;
@@ -274,8 +294,8 @@ public class MyFile {
 
 		System.out.println("Numero de arquivos no diretorio : " + fList.length );
 
-		for ( int i = 0; i < fList.length ; i++ ){ 
-			System.out.println( fList[i] );
+		for (java.io.File file : fList) {
+			System.out.println(file);
 		}
 		
 		return fList;
@@ -303,8 +323,14 @@ public class MyFile {
 	      	result = Arrays.equals(firstFewBytes, BYTE_ORDER_MARK);
 			input.close();
 	    } catch (FileNotFoundException e) {
+			logger.error("FileNotFoundException");
+			logger.info("File full name: " + this.file.getFileFullName());
+			logger.error(e.toString());
 			e.printStackTrace();
 		} catch (IOException e) {
+			logger.error("IOException");
+			logger.info("File full name: " + this.file.getFileFullName());
+			logger.error(e.toString());
 			e.printStackTrace();
 		}
 	    return result;
@@ -322,8 +348,14 @@ public class MyFile {
 			reader = new BufferedReader(streamReader);
 			return true;
 		} catch (FileNotFoundException e) {
+			logger.error("FileNotFoundException");
+			logger.info("File full name: " + this.file.getFileFullName());
+			logger.error(e.toString());
 			e.printStackTrace();
 		} catch (UnsupportedEncodingException e) {
+			logger.error("UnsupportedEncodingException");
+			logger.info("File full name: " + this.file.getFileFullName());
+			logger.error(e.toString());
 			e.printStackTrace();
 		}
 		return false;
@@ -345,6 +377,9 @@ public class MyFile {
 			reader.close();
 			return true;
 		} catch (Exception e) {
+			logger.error("Exception");
+			logger.info("File full name: " + this.file.getFileFullName());
+			logger.error(e.toString());
 			e.printStackTrace();
 		}
 		arquivoLido = null;
@@ -365,6 +400,9 @@ public class MyFile {
 				line = reader.readLine();
 			}
 		} catch (IOException e) {
+			logger.error("IOException");
+			logger.info("File full name: " + this.file.getFileFullName());
+			logger.error(e.toString());
 			e.printStackTrace();
 		}
 		return line;
@@ -402,8 +440,14 @@ public class MyFile {
 			arquivoCopiado.setLastModified( dataArquivo.getTimeInMillis() );
 			return true;
 		} catch (FileNotFoundException e) {
+			logger.error("FileNotFoundException");
+			logger.info("File full name: " + this.file.getFileFullName());
+			logger.error(e.toString());
 			e.printStackTrace();
 		} catch (IOException e) {
+			logger.error("IOException");
+			logger.info("File full name: " + this.file.getFileFullName());
+			logger.error(e.toString());
 			e.printStackTrace();
 		}
 		return false;
