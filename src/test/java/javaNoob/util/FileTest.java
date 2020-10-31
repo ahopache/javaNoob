@@ -33,7 +33,7 @@ public class FileTest implements junit.framework.Test {
 	 */
 	@Test
 	@Order(1)
-	void testConstructor() {
+	public void constructor() {
 		logger.trace("Teste construtores - Inicio");
 		file = new MyFile(new LocalFile(fileName));
 		assertEquals(file.getLocalFile().getFileName(), fileName);
@@ -47,7 +47,7 @@ public class FileTest implements junit.framework.Test {
 	 */
 	@Test
 	@Order(2)
-	void testSetDirectory() {
+	public void setDirectory() {
 		logger.trace("Teste setDirectory - Inicio");
 		file.setDirectory(directory);
 		assertEquals(directory, file.getLocalFile().getDirectory());
@@ -59,7 +59,7 @@ public class FileTest implements junit.framework.Test {
 	 */
 	@Test
 	@Order(2)
-	void testCreateDirectoryIfDoesntExists() {
+	public void createDirectoryIfDoesntExists() {
 		logger.trace("Teste createDirectory - Inicio");
 		assertTrue(file.createDirectoryIfDoesntExists(directory));
 		logger.trace("Teste createDirectory - Fim");
@@ -70,7 +70,7 @@ public class FileTest implements junit.framework.Test {
 	 */
 	@Test
 	@Order(3)
-	void testCreateFile() {
+	public void createFile() {
 		logger.trace("Teste createFile - Inicio");
 		logger.trace("- Teste1: criando por string");
 		assertTrue( file.createFile());
@@ -90,7 +90,7 @@ public class FileTest implements junit.framework.Test {
 	 */
 	@Test
 	@Order(4)
-	void testNewLine() {
+	public void newLine() {
 		logger.trace("Teste newLine - Inicio");
 		assertTrue( file.newLine("teste salvar uma linha no arquivo"));
 		logger.trace("Teste newLine - Fim");
@@ -101,7 +101,7 @@ public class FileTest implements junit.framework.Test {
 	 */
 	@Test
 	@Order(5)
-	void testSaveFile() throws IOException {
+	public void saveFile() throws IOException {
 		logger.trace("Teste saveFile - Inicio");
 		assertTrue( file.saveFile());
 		logger.trace("Teste saveFile - Fim");
@@ -112,7 +112,7 @@ public class FileTest implements junit.framework.Test {
 	 */
 	@Test
 	@Order(6)
-	void testOpenTextFile() throws IOException {
+	public void openTextFile() throws IOException {
 		logger.trace("Teste openTextFile - Inicio");
 		assertTrue( file.openTextFile() );
 		logger.trace("Teste openTextFile - Fim");
@@ -123,7 +123,7 @@ public class FileTest implements junit.framework.Test {
 	 */
 	@Test
 	@Order(7)
-	void testGetNextLineFromFile() throws IOException {
+	public void getNextLineFromFile() throws IOException {
 		logger.trace("Teste getNextLine - Inicio");
 		assertTrue( file.getNextLineFromFile().length() > 10);
 		logger.trace("Teste getNextLine - Fim");
@@ -134,7 +134,7 @@ public class FileTest implements junit.framework.Test {
 	 */
 	@Test
 	@Order(8)
-	void testCloseFile() {
+	public void closeFile() {
 		logger.trace("Teste closeFile - Inicio");
 		assertTrue( file.closeTextFile());
 		logger.trace("Teste closeFile - Fim");
@@ -145,7 +145,7 @@ public class FileTest implements junit.framework.Test {
 	 */
 	@Test
 	@Order(9)
-	void testRenameFile() throws IOException {
+	public void renameFile() throws IOException {
 		logger.trace("Teste renomear arquivo - Inicio");
 		logger.trace("Renomear de: " + file.getLocalFile().getFileFullName());
 		logger.trace("Para: " + file.getLocalFile().getDirectory() + "_" + fileName);
@@ -160,7 +160,7 @@ public class FileTest implements junit.framework.Test {
 	 */
 	@Test
 	@Order(10)
-	void testGetFileLastModified() throws IOException {
+	public void getFileLastModified() throws IOException {
 		logger.trace("Teste getLastModified - Inicio");
 		assertTrue( file.getFileLastModified().before(new GregorianCalendar()));
 		logger.trace("Teste getLastModified - Fim");
@@ -171,7 +171,7 @@ public class FileTest implements junit.framework.Test {
 	 */
 	@Test
 	@Order(11)
-	void testIsFile() throws IOException {
+	public void isFile() throws IOException {
 		logger.trace("Teste isFile - Inicio");
 		assertTrue( file.isFile());
 		assertTrue( file.isExists());
@@ -183,7 +183,7 @@ public class FileTest implements junit.framework.Test {
 	 */
 	@Test
 	@Order(12)
-	void testCopyFile() throws IOException {
+	public void copyFile() throws IOException {
 		logger.trace("Teste copyFile - Inicio");
 		assertTrue( file.copyFile("copy_" + fileName) );
 		assertTrue( file.copyFile(fileName) );
@@ -195,7 +195,7 @@ public class FileTest implements junit.framework.Test {
 	 */
 	@Test
 	@Order(13)
-	void testListFilesInDirectory() {
+	public void listFilesInDirectory() {
 		logger.trace("Teste listFiles - Inicio");
 		assertTrue(file.listFilesInDirectory().length >= 0);
 		logger.trace("Teste listFiles - Fim");
@@ -206,7 +206,7 @@ public class FileTest implements junit.framework.Test {
 	 */
 	@Test
 	@Order(14)
-	void testIsFileStartsWithBOM() throws IOException {
+	public void isFileStartsWithBOM() throws IOException {
 		logger.trace("Teste isFileStartsWithBOM - Inicio");
 		assertTrue(!this.file.isFileStartsWithBOM());
 		logger.trace("Teste isFileStartsWithBOM - Fim");
@@ -218,7 +218,7 @@ public class FileTest implements junit.framework.Test {
 	 */
 	@Test
 	@Order(15)
-	void testDeleteFile() throws IOException {
+	public void deleteFile() throws IOException {
 		assertTrue( file.deleteFile());
 	}
 
@@ -226,7 +226,7 @@ public class FileTest implements junit.framework.Test {
 	 * Test method for {@link MyFile#setFile(java.lang.String)}.
 	 */
 	@Test
-	void testSetFile() {
+	public void setFile() {
 		logger.trace("Teste setFile - Inicio");
 		file.setFile(fileName);
 		assertEquals(fileName, file.getLocalFile().getFileName());
@@ -237,7 +237,7 @@ public class FileTest implements junit.framework.Test {
 	 * Test method for {@link MyFile#getEncode()}.
 	 */
 	@Test
-	void testGetEncode() {
+	public void getEncode() {
 		logger.trace("Teste getEncode - Inicio");
 		assertEquals("UTF-8",this.file.getEncode());
 		logger.trace("Teste getEncode - Fim");
@@ -247,7 +247,7 @@ public class FileTest implements junit.framework.Test {
 	 * Test method for {@link MyFile#setEncode(java.lang.String)}.
 	 */
 	@Test
-	void testSetEncode() {
+	public void setEncode() {
 		logger.trace("Teste setEncode - Inicio");
 		assertEquals("UTF-8", this.file.getEncode());
 		this.file.setEncode("teste");
