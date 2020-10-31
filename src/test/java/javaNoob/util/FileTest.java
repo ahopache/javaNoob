@@ -20,7 +20,7 @@ import util.file.MyFile;
 import static org.junit.jupiter.api.Assertions.*;
 
 @TestMethodOrder(OrderAnnotation.class)
-class FileTest implements junit.framework.Test {
+public class FileTest implements junit.framework.Test {
 	private static final Logger logger = LoggerFactory.getLogger(FileTest.class);
 
 	private static MyFile file;
