@@ -8,7 +8,6 @@ package javaNoob.util;
 import java.io.IOException;
 import java.util.GregorianCalendar;
 
-import junit.framework.TestResult;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 
@@ -18,7 +17,7 @@ import util.file.MyFile;
 import static org.junit.jupiter.api.Assertions.*;
 
 @TestMethodOrder(OrderAnnotation.class)
-public class FileTest implements junit.framework.Test {
+public class FileTest {
 	private static MyFile file;
 	private LocalFile localFile;
 	private final String fileName = "test.txt";
@@ -96,15 +95,5 @@ public class FileTest implements junit.framework.Test {
 		assertEquals("teste", file.getEncode());
 		file.setEncode("UTF-8");
 		assertEquals("UTF-8", file.getEncode());
-	}
-
-	@Override
-	public int countTestCases() {
-		return 0;
-	}
-
-	@Override
-	public void run(TestResult testResult) {
-
 	}
 }
