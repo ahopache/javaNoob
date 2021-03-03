@@ -172,8 +172,7 @@ public class UtilFTPServer {
     }
 
     private void createUsersProperties() throws Exception {
-        MyFile file = new MyFile("");
-        file.setFile("myusers.properties");
+        MyFile file = new MyFile("myusers.properties");
         file.createFile();
         file.newLine("# Password is \"admin\"");
         file.newLine("ftpserver.user.admin.userpassword=21232F297A57A5A743894A0E4A801FC3");

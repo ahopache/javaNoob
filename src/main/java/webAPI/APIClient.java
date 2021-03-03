@@ -16,17 +16,13 @@
  */
 package webAPI;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
-import org.apache.http.client.methods.HttpDelete;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPatch;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.client.methods.*;
 import org.apache.http.impl.client.DefaultHttpClient;
 import webAPI.client.APIHeader;
 import webAPI.client.security.None;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 public class APIClient {
 	protected APISecurity apiSecurity;
@@ -91,7 +87,7 @@ public class APIClient {
 		return "APIClient{" +
 				"apiSecurity=" + apiSecurity +
 				", listHeader=" + listHeader +
-				", client=" + client.toString() +
+				", client=" + client +
 				", sendMethod=" + sendMethod +
 				'}';
 	}

@@ -113,7 +113,9 @@ public class UtilString {
 				}
 			}
 		}
-		if(txt_parcial.length()>0) {
+		if(txt_parcial.isEmpty()) {
+			// do nothing
+		}else{
 			list.add(txt_parcial.toString().trim());
 		}
 		
@@ -164,7 +166,7 @@ public class UtilString {
 	public static String removeAspas(String text){
 		if(text == null) {
 			return null;
-		}else if( text.length() > 0 ){
+		}else if( ! text.isEmpty() ){
 			text = text.replaceAll("'", "");
 			text = text.replaceAll("\"", "");
 			text = text.replaceAll("`", "");
@@ -187,7 +189,9 @@ public class UtilString {
 	 * @return -> String sem caracter especial
 	 */
 	public static String removeChaves(String text){
-		if( text.length() > 0 ){
+		if(text.isEmpty()){
+			// do nothing
+		}else{
 			text = text.replaceAll("\\{", "");
 			text = text.replaceAll("}", "");
 		}

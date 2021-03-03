@@ -16,7 +16,6 @@ import org.openqa.selenium.firefox.FirefoxProfile;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 public class UtilWeb {
     protected WebDriver driver;
@@ -153,8 +152,11 @@ public class UtilWeb {
 
         if (listTitle.contains(title))
             return true;
-        else if (html.contains("<BODY BGCOLOR=\"#FFFFFF\" TEXT=\"#000000\">\n<H1>Not Found</H1>\n" +
-                "<H2>Error 404</H2>\n</BODY>"))
+        else if (html.contains("""
+                <BODY BGCOLOR="#FFFFFF" TEXT="#000000">
+                <H1>Not Found</H1>
+                <H2>Error 404</H2>
+                </BODY>"""))
             return true;
         else
             return false;

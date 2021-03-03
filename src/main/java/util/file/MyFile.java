@@ -14,15 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import util.model.LocalFile;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.util.Arrays;
@@ -92,6 +84,10 @@ public class MyFile {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	public File getFile(){
+		return new File(this.file.getFileFullName());
 	}
 	
 	public LocalFile getLocalFile() {

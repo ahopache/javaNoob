@@ -44,8 +44,8 @@ public class Access {
 	public String toString(){
 		return "DB name: " + this.bdName +
 				", String connection: " + this.strConnection +
-				", Connection: " + connection.toString() +
-				", Statement: " + statement.toString();
+				", Connection: " + connection +
+				", Statement: " + statement;
 	}
 	
 	/**
@@ -65,8 +65,9 @@ public class Access {
             // Efetuando a conexão
             Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
             connection = DriverManager.getConnection("jdbc:ucanaccess://" + nomeBanco + ";memory=false", "", "");
-        } catch (Exception Driver) {
-        	Driver.printStackTrace();
+        } catch (Exception e) {
+
+        	e.printStackTrace();
         }
 	}
 	
